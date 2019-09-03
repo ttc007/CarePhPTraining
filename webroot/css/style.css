@@ -522,3 +522,57 @@ table td {
     vertical-align: top;
     word-break: break-all;
 }
+.header-user img{
+    height: 40px;
+    color: #fff;
+}
+.li-header-user .header-menu-user{
+    position: absolute;
+    border: 1px solid #ccc;
+    width: 150px;
+    right: 10px;
+    top: 50px;
+    padding: 10px;
+    display: none;
+    border-radius: 5px;
+}
+.li-header-user.open .header-menu-user{
+    display: block;
+}
+.li-header-user .header-menu-user li a{
+    background: #fff!important;
+    color: #555!important;
+    line-height: 1rem!important;
+    margin-bottom: 15px;
+    font-size: 15px;
+}
+.li-header-user .header-menu-user li{
+    background: #fff!important;
+    color: #555!important;
+}
+.header-menu-user::before {
+    right: 10px;
+    top: -12px;
+    border: 6px solid;
+    border-color: transparent transparent #fff;
+    z-index: 99;
+    border-bottom-style: solid;
+    content: "";
+    display: block;
+    height: 0;
+    position: absolute;
+    width: 0;
+}
+.header-menu-user::after {
+    right: 9px;
+    top: -14px;
+    border: 7px solid;
+    border-color: transparent transparent #bbb;
+    z-index: 98;
+    border-bottom-style: solid;
+    content: "";
+    display: block;
+    height: 0;
+    position: absolute;
+    width: 0;
+}

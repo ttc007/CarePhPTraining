@@ -20,7 +20,7 @@ use Cake\Error\Debugger;
 use Cake\Http\Exception\NotFoundException;
 
 $this->layout = false;
-$this->extend('/Layout/default');
+$this->extend('/Layout/login-layout');
 
 if (!Configure::read('debug')) :
     throw new NotFoundException(

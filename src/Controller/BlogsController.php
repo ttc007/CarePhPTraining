@@ -31,20 +31,8 @@ class BlogsController extends AppController
 
     public function initialize()
     {
-        // parent::initialize();
-         
         $this->loadComponent('Paginator');
-        $this->loadComponent('Flash'); // Include the FlashComponent
         parent::initialize();
-        // $this->loadComponent('Auth', [
-        //     'loginAction' => [
-        //         'controller' => 'Users',
-        //         'action' => 'login'
-        //         // 'plugin' => 'Users'
-        //     ],
-        //     'authError' => 'Did you really think you are allowed to see that?',
-        //     'storage' => 'Session'
-        // ]);
     }
     
     public function index()
