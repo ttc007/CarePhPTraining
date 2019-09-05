@@ -77,6 +77,22 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
             </tr>
         <?php endforeach; ?>
     </table>
+    <div class="paginate">
+        <ul class="ul-paginate">
+            <?php
+                echo $this->Paginator->prev('«', [], [], array('class' => 'disabled')); 
+                echo $this->Paginator->numbers(); 
+                echo $this->Paginator->next('»', [], [], array('class' => 'disabled'));
+                
+            ?>
+        </ul>
+        <div class="paginate-count">
+            <?php
+                echo " Page ".$this->Paginator->counter();
+            ?>
+        </div>
+    </div>
+    
 </div>
 
 </body>

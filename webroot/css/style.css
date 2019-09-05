@@ -587,3 +587,31 @@ table td {
     width: 500px;
     margin:100px auto;
 }
+.ul-paginate li{
+    display: inline-block;
+    margin:0;
+    padding: 0;
+}
+.ul-paginate li a{
+    display: inline-block;
+    border:1px solid #ccc;
+    border-left: none;
+    padding: 10px 19px;
+    background: #f6f6f6;
+    color: #31343e;
+}
+.ul-paginate li:first-child a{
+    border-left: 1px solid #ccc;
+}
+.ul-paginate li.disabled a{
+    background: #fff;
+}
+.ul-paginate li a:hover{
+    text-decoration: none;
+}
+.ul-paginate{
+    float: right;
+}
+.paginate{
+    width: 100%;
+}

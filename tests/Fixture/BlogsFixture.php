@@ -5,36 +5,25 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 class BlogsFixture extends TestFixture
 {
-    // Optional. Set this property to load fixtures to a different test datasource
-    public $connection = 'test';
-
-    public $import = ['model' => 'Blogs'];
-    public $fields = [
-          'id' => ['type' => 'integer'],
-          'title' => ['type' => 'string', 'length' => 255, 'null' => false],
-          'content' => 'text',
-          '_constraints' => [
-            'primary' => ['type' => 'primary', 'columns' => ['id']]
-          ]
-      ];
+    public $import = ['table' => 'blogs'];
     public $records = [
         [
-            'title' => 'First Article',
-            'content' => 'First Article Body',
+          'title' => 'First Article',
+          'content' => 'First Article Body',
+          'user_id' => '1',
+          'image' => null
         ],
         [
-            'title' => 'Second Article',
-            'content' => 'Second Article Body',
+          'title' => 'Second Article',
+          'content' => 'Second Article Body',
+          'user_id' => '1',
+          'image' => null
         ],
         [
-            'title' => 'Third Article',
-            'content' => 'Third Article Body',
+          'title' => 'Third Article',
+          'content' => 'Third Article Body',
+          'user_id' => '1',
+          'image' => null
         ]
     ];
- 
-
-    public function init()
-    {
-        parent::init();
-    }
 }

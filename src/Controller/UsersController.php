@@ -4,17 +4,27 @@ namespace App\Controller;
 use App\Controller\AppController;
 use Cake\Event\Event;
 use App\Model\Entity\User;
+use App\Controller\Component\PagematronComponent;
+
 class UsersController extends AppController
 {
+    public function initialize()
+    {
+        parent::initialize();
+        // $this->loadComponent('Paginator');
+        $this->loadComponent('Pagematron');
+    }
 
     public function beforeFilter(Event $event)
     {
         parent::beforeFilter($event);
     }
 
-     public function index()
-     {
-        $this->set('users', $this->Users->find('all'));
+    public function index()
+    {
+        $this->Pagematron->adjust();
+        $users = $this->paginate($this->Users->find()->where(['id > ' => 1]));
+        $this->set('users', $users);
     }
 
     public function view($id)
