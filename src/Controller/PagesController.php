@@ -20,6 +20,7 @@ use Cake\Http\Exception\NotFoundException;
 use Cake\View\Exception\MissingTemplateException;
 use Cake\Event\Event;
 
+
 /**
  * Static content controller
  *
@@ -30,24 +31,6 @@ use Cake\Event\Event;
 class PagesController extends AppController
 {
 
-    public function initialize()
-    {
-        $this->loadComponent('Auth', [
-            'loginAction' => [
-                'controller' => 'Users',
-                'action' => 'login'
-            ],
-            'authError' => 'Vui lòng đăng nhập',
-            'storage' => 'Session'
-        ]);
-        parent::initialize();
-    }
-
-    public function beforeFilter(Event $event)
-    {
-        // parent::beforeFilter($event);
-        $this->Auth->allow('add', 'logout', 'login');
-    }
     /**
      * Displays a view
      *
@@ -57,6 +40,17 @@ class PagesController extends AppController
      * @throws \Cake\Http\Exception\NotFoundException When the view file could not
      *   be found or \Cake\View\Exception\MissingTemplateException in debug mode.
      */
+    public function initialize()
+    {
+        parent::initialize();
+    }
+
+    public function beforeFilter(Event $event)
+    {
+        // parent::beforeFilter($event);
+        $this->Auth->allow('add', 'logout', 'login');
+    }
+
     public function display(...$path)
     {
         $count = count($path);

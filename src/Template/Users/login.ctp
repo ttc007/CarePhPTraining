@@ -56,16 +56,16 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
 </header>
 
 <div class="row">
-    <h3>Đăng nhập </h3>
     <div class="users form">
     <?= $this->Flash->render() ?>
     <?= $this->Form->create() ?>
         <fieldset>
-            <legend><?= __('Please enter your username and password') ?></legend>
+            <legend><?= __('Login') ?></legend>
             <?= $this->Form->control('username') ?>
             <?= $this->Form->control('password') ?>
+            <?= $this->Form->button(__('Login')); ?>
+            <?= $this->Html->link('Register', ['action' => 'add'], ['class'=> 'button-register']); ?>
         </fieldset>
-    <?= $this->Form->button(__('Login')); ?>
     <?= $this->Form->end() ?>
     </div>
 </div>

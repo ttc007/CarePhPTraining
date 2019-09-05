@@ -45,6 +45,14 @@ use Cake\Routing\Route\DashedRoute;
  */
 Router::defaultRouteClass(DashedRoute::class);
 
+Router::prefix('admin', function ($routes) {
+    // All routes here will be prefixed with `/admin`
+    // And have the prefix => admin route element added.
+    $routes->connect('/:controller', ['action' => 'index'], ['routeClass' => 'DashedRoute']);
+    $routes->connect('/:controller/:action/*', [], ['routeClass' => 'DashedRoute']);
+    $routes->fallbacks(DashedRoute::class);
+});
+
 Router::scope('/', function (RouteBuilder $routes) {
     // Register scoped middleware for in scopes.
     $routes->registerMiddleware('csrf', new CsrfProtectionMiddleware([
@@ -56,7 +64,6 @@ Router::scope('/', function (RouteBuilder $routes) {
      * Requires middleware to be registered via `Application::routes()` with `registerMiddleware()`
      */
     $routes->applyMiddleware('csrf');
-
     /**
      * Here, we are connecting '/' (base path) to a controller called 'Pages',
      * its action called 'display', and we pass a param to select the view file
@@ -72,7 +79,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/:controller', ['action' => 'index'], ['routeClass' => 'DashedRoute']);
     $routes->connect('/:controller/:action/*', [], ['routeClass' => 'DashedRoute']);
 
-    // $routes->connect('/admin/:controller/:action/*', ['controller' => 'Pages']);
+    
 
     /**
      * Connect catchall routes for all controllers.

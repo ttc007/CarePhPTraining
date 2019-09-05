@@ -20,7 +20,7 @@ use Cake\Error\Debugger;
 use Cake\Http\Exception\NotFoundException;
 
 $this->layout = false;
-$this->extend('/Layout/login-layout');
+$this->extend('/Layout/default');
 
 if (!Configure::read('debug')) :
     throw new NotFoundException(
@@ -56,21 +56,27 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
 </header>
 
 <div class="row">
-    <div class="users form">
-    <?= $this->Form->create($user) ?>
-        <fieldset>
-            <legend><?= __('Register') ?></legend>
-            <?= $this->Form->control('username') ?>
-            <?= $this->Form->control('password') ?>
-            <?= $this->Form->control('confirmPassword', ['type'=>'password']) ?>
-            <?= $this->Form->control('role', [
-                'options' => ['admin' => 'Admin', 'author' => 'Author']
-            ]) ?>
-            <?= $this->Form->button(__('Submit')); ?>
-       </fieldset>
-    
-    <?= $this->Form->end() ?>
-    </div>
+    <h3>Danh sách User</h3>
+    <table class="table">
+        <tr>
+            <th>Tên đăng nhập</th>
+            <th>Chức vụ</th>
+            <th></th>
+        </tr>
+        <?php foreach ($users as $user): ?>
+            <tr>
+                <td>
+                    <?= $user->username ?>
+                </td>
+                <td>
+                    <?= $user->role ?>
+                </td>
+                <td>
+                    <?= $this->Html->link('Delete', ['action' => 'delete', $user->id]) ?>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
 </div>
 
 </body>

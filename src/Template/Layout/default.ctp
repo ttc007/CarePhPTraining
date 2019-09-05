@@ -39,22 +39,19 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
     <nav class="top-bar expanded" data-topbar role="navigation">
         <ul class="title-area large-3 medium-4 columns">
-            <!-- <li class="name">
-                <h1><a href=""><?= $this->fetch('title') ?></a></h1>
-            </li> -->
             <li class="name">
-                <h1><a href="">CekePHP trainning    </a></h1>
+                <h1><a href=""><?= $this->fetch('title', 'PHPCAKE TRAINING') ?></a></h1>
             </li>
         </ul>
         <div class="top-bar-section">
             <ul class="right">
                 <li class="li-header-user">
-                    <a target="_blank" class="header-user"><?= $this->Html->image('user-icon.png') ?></a>
+                    <a target="_blank" class="header-user"><?= $this->Html->image('user-icon.png', ['class'=>'user-icon', 'style'=>'height:40px']) ?></a>
                     <div class="header-menu-user">
                         <ul>
                             <li><a href="">Quản lí vụ</a></li>

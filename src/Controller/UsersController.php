@@ -10,7 +10,6 @@ class UsersController extends AppController
     public function beforeFilter(Event $event)
     {
         parent::beforeFilter($event);
-        $this->Auth->allow('add', 'logout', 'login');
     }
 
      public function index()
@@ -28,13 +27,15 @@ class UsersController extends AppController
     {
         $user = $this->Users->newEntity();
         if ($this->request->is('post')) {
-            // Prior to 3.4.0 $this->request->data() was used.
             $user = $this->Users->patchEntity($user, $this->request->getData());
-            // dd($this->request);
+            if($user->password!=$user->confirmPassword) {
+                $this->Flash->error(__('Confirm password không khớp'));
+                return $this->redirect(['action' => 'add']);
+            }
             $user->password = User::_setPassword($this->request->getData()['password']);
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
-                return $this->redirect(['action' => 'add']);
+                return $this->redirect(['action' => 'login']);
             }
             $this->Flash->error(__('Unable to add the user.'));
         }
