@@ -54,9 +54,10 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
                     <a target="_blank" class="header-user"><?= $this->Html->image('user-icon.png', ['class'=>'user-icon', 'style'=>'height:40px']) ?></a>
                     <div class="header-menu-user">
                         <ul>
-                            <li><a href="">Quản lí vụ</a></li>
-                            <li><a href="">Quản lí đợt</a></li>
-                            <li><a href="">Quản lí thôn/khu</a></li>
+                            <li><?= $this->Html->link('Quản lí nông hộ', ['controller' => 'Farmers', 'action' => 'index']) ?></li>
+                            <li><?= $this->Html->link('Quản lí mùa vụ', ['controller' => 'Seasons', 'action' => 'index']) ?></li>
+                            <li><?= $this->Html->link('Quản lí đợt', ['controller' => 'Batchs', 'action' => 'index']) ?></li>
+                            <li><?= $this->Html->link('Quản lí thôn/khu', ['controller' => 'Villages', 'action' => 'index']) ?></li>
                             <li><?= $this->Html->link('Đăng xuất', ['controller' => 'Users', 'action' => 'logout']) ?></li>
                         </ul>
                     </div>

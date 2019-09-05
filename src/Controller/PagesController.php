@@ -53,6 +53,7 @@ class PagesController extends AppController
 
     public function display(...$path)
     {
+        return $this->redirect(['controller' => 'Farmers', 'action' => 'index']);
         $count = count($path);
         if (!$count) {
             return $this->redirect('/');

@@ -533,6 +533,7 @@ table td {
     padding: 10px;
     display: none;
     border-radius: 5px;
+    background: #fff;
 }
 .li-header-user.open .header-menu-user{
     display: block;
@@ -614,4 +615,11 @@ table td {
 }
 .paginate{
     width: 100%;
+}
+input{
+    min-width: 500px;
+}
+form{
+    border:1px solid #ccc;
+    padding: 30px;
 }
