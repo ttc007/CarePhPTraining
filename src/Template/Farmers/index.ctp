@@ -33,56 +33,70 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
 ?>
 <!DOCTYPE html>
 <html>
-<head>
-    <?= $this->Html->charset() ?>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        <?= $cakeDescription ?>
-    </title>
+    <head>
+        <?= $this->Html->charset() ?>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>
+            <?= $cakeDescription ?>
+        </title>
 
-    <?= $this->Html->meta('icon') ?>
-    <?= $this->Html->css('base.css') ?>
-    <?= $this->Html->css('style.css') ?>
-    <?= $this->Html->css('home.css') ?>
-    <link href="https://fonts.googleapis.com/css?family=Raleway:500i|Roboto:300,400,700|Roboto+Mono" rel="stylesheet">
-</head>
-<body class="home">
+        <?= $this->Html->meta('icon') ?>
+        <?= $this->Html->css('base.css') ?>
+        <?= $this->Html->css('style.css') ?>
+        <?= $this->Html->css('home.css') ?>
+        <link href="https://fonts.googleapis.com/css?family=Raleway:500i|Roboto:300,400,700|Roboto+Mono" rel="stylesheet">
+    </head>
+    <body class="home">
+        <?php echo $this->Form->create( null ,['class'=>'form-filter']); ?>
+            <div class="row">
+                <div class="col-md-4">
+                    <?php
+                        echo $this->Form->control('season_id', ['type' => 'select','options'=>$this->GetOptions->getSeasonOptions(), 'label' => 'Mùa vụ']);
+                    ?>
+                </div>
+                <div class="col-md-4">
+                    <?php
+                        echo $this->Form->control('village_id', ['type' => 'select','options'=>$this->GetOptions->getVillageOptions(), 'label'=> 'Khu/thôn']);
+                    ?>
+                </div>
+                <div class="col-md-4">
+                    <?php
+                        echo $this->Form->button(__('Lọc') , ['class'=>'btn-filter']);
+                    ?>
+                </div>
+            </div>
+        <?php echo $this->Form->end(); ?>
+        <div class="row">
+            <table class="table table-bordered table-striped">
+                <tr>
+                    <th style="width: 50px">STT</th>
+                    <th>Nông hộ</th>
+                    <?php foreach ($batchs as $batch) : ?>
+                        <th><?= $batch->name ?></th>
+                    <?php endforeach ?>
+                </tr>
+                <?php foreach ($farmers as $key => $farmer): ?>
+                    <tr>
+                        <td><?= $key+1 ?></td>
+                        <td>
+                            <?= $this->Html->link($farmer->name, ['action' => 'edit', $farmer->id], ['class'=>'farmer-name']) ?><br>
+                            Mã số: <?= $this->Html->link($farmer->id, ['action' => 'edit', $farmer->id]) ?><br>
+                            Số điện thoại: <?= $farmer->phone ?><br>
+                            Khu/thôn: <?= $this->GetNameEntity->getVillageName($farmer->village_id) ?>
+                        </td>
+                        <?php foreach ($batchs as $batch) : ?>
+                            <td>
+                                <?php foreach ($farmer->batchs[$batch->id] as $farmerFertilizer) : ?>
+                                    <?= $this->GetNameEntity->getName('Fertilizers',  $farmerFertilizer->fertilizer_id) ?>: 
+                                    <?= $farmerFertilizer->quantity ?> Kg<br>
+                                <?php endforeach ?>
+                                <?= $this->Html->link("+", ['action' => 'addFarmerFertilizer', $farmer->id,$batch->id ]) ?>
+                            </td>
+                        <?php endforeach ?>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
+        </div>
 
-<header class="row">
-    <!-- <div class="header-image"><?= $this->Html->image('cake.logo.svg') ?></div> -->
-    <!-- <div class="header-title">
-        <h1>Welcome to CakePHP <?= Configure::version() ?> Red Velvet. Build fast. Grow solid.</h1>
-    </div> -->
-</header>
-
-<div class="row">
-    <h3>Danh sách Farmer <?= $this->Html->link("+", ['action' => 'add']) ?></h3>
-    <table>
-        <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Phone</th>
-            <th>Village</th>
-            <th></th>
-        </tr>
-        <?php foreach ($farmers as $farmer): ?>
-            <tr>
-                <td>
-                    <?= $this->Html->link($farmer->id, ['action' => 'edit', $farmer->id]) ?>
-                </td>
-                <td>
-                    <?= $this->Html->link($farmer->name, ['action' => 'edit', $farmer->id]) ?>
-                </td>
-                <td>
-                    <?= $farmer->phone ?>
-                </td>
-                <td>
-                    <?= $this->GetNameEntity->getVillageName($farmer->village_id) ?>
-                </td>
-            </tr>
-        <?php endforeach; ?>
-    </table>
-</div>
-
-</body>
+    </body>
 </html>

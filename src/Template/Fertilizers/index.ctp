@@ -29,6 +29,7 @@ if (!Configure::read('debug')) :
 endif;
 
 $cakeDescription = 'CakePHP: the rapid development PHP framework';
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -47,15 +48,27 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
     </head>
     <body class="home">
         <div class="row">
-            <?php
-                echo $this->Form->create($batch);
-                // Hard code the user for now.
-                echo $this->Form->control('batch_id', ['type' => 'hidden', 'value' => $batch->id]);
-                echo $this->Form->control('name');
-                echo $this->Form->button(__('Lưu'));
-                echo $this->Form->end();
-            ?>
+            <table>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Unit</th>
+                </tr>
+                <?php foreach ($fertilizers as $fertilizer): ?>
+                    <tr>
+                        <td>
+                            <?= $this->Html->link($fertilizer->id, ['action' => 'edit', $fertilizer->id]) ?>
+                        </td>
+                        <td>
+                            <?= $this->Html->link($fertilizer->get('name'), ['action' => 'edit', $fertilizer->id]) ?>
+                        </td>
+                        <td><?= number_format($fertilizer->price) ?> đ</td>
+                        <td><?= $fertilizer->unit ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
         </div>
-
+        
     </body>
 </html>

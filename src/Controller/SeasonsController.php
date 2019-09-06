@@ -18,6 +18,7 @@ use Cake\Core\Configure;
 use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\View\Exception\MissingTemplateException;
+use Cake\Event\Event;
 
 /**
  * Static content controller
@@ -34,7 +35,11 @@ class SeasonsController extends AppController
         $this->loadComponent('Paginator');
         parent::initialize();
     }
-    
+    public function beforeFilter(Event $event)
+    {
+        $this->titleController = 'Mùa vụ';
+        parent::beforeFilter($event);
+    }
     public function index()
     {
         $seasons = $this->Paginator->paginate($this->Seasons->find());

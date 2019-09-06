@@ -57,6 +57,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
                             <li><?= $this->Html->link('Quản lí nông hộ', ['controller' => 'Farmers', 'action' => 'index']) ?></li>
                             <li><?= $this->Html->link('Quản lí mùa vụ', ['controller' => 'Seasons', 'action' => 'index']) ?></li>
                             <li><?= $this->Html->link('Quản lí đợt', ['controller' => 'Batchs', 'action' => 'index']) ?></li>
+                            <li><?= $this->Html->link('Quản lí phân bón', ['controller' => 'Fertilizers', 'action' => 'index']) ?></li>
                             <li><?= $this->Html->link('Quản lí thôn/khu', ['controller' => 'Villages', 'action' => 'index']) ?></li>
                             <li><?= $this->Html->link('Đăng xuất', ['controller' => 'Users', 'action' => 'logout']) ?></li>
                         </ul>
@@ -65,8 +66,20 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
             </ul>
         </div>
     </nav>
+
     <?= $this->Flash->render() ?>
     <div class="container clearfix">
+        <div class="row mt-4">
+            <?php echo $this->element('breadcrumb',[
+            'hierarchys' => $hierarchys]); ?>
+            <h3>
+                <?= $pageTitle ?> 
+                <?php if($this->request->params['action']=='index'):?>
+                    <?= $this->Html->link("+", ['action' => 'add']) ?>
+                <?php endif?>
+            </h3>
+
+        </div>
         <?= $this->fetch('content') ?>
     </div>
     <footer>

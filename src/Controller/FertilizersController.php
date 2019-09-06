@@ -27,7 +27,7 @@ use Cake\Event\Event;
  *
  * @link https://book.cakephp.org/3.0/en/controllers/pages-controller.html
  */
-class VillagesController extends AppController
+class FertilizersController extends AppController
 {
 
     public function initialize()
@@ -37,42 +37,41 @@ class VillagesController extends AppController
     }
     public function beforeFilter(Event $event)
     {
-        $this->titleController = 'Khu/thôn';
+        $this->titleController = 'Phân bón';
         parent::beforeFilter($event);
     }
-    
     public function index()
     {
-        $villages = $this->Paginator->paginate($this->Villages->find());
-        $this->set(compact('villages'));
+        $fertilizers = $this->Paginator->paginate($this->Fertilizers->find());
+        $this->set(compact('fertilizers'));
     }
 
     public function add()
     {
-        $village = $this->Villages->newEntity();
+        $fertilizer = $this->Fertilizers->newEntity();
         if ($this->request->is('post')) {
-            $village = $this->Villages->patchEntity($village, $this->request->getData());
+            $fertilizer = $this->Fertilizers->patchEntity($fertilizer, $this->request->getData());
              
-            if ($this->Villages->save($village)) {
-                $this->Flash->success(__('Your village has been saved.'));
+            if ($this->Fertilizers->save($fertilizer)) {
+                $this->Flash->success(__('Your fertilizer has been saved.'));
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Unable to add your blog.'));
         }
-        $this->set(compact('village'));
+        $this->set(compact('fertilizer'));
     }
 
     public function edit($id)
     {
-        $village = $this->Villages->findById($id)->firstOrFail();
+        $fertilizer = $this->Fertilizers->findById($id)->firstOrFail();
         if ($this->request->is(['post', 'put'])) {
-            $this->Villages->patchEntity($village, $this->request->getData());
-            if ($this->Villages->save($village)) {
-                $this->Flash->success(__('Your village has been updated.'));
+            $this->Fertilizers->patchEntity($fertilizer, $this->request->getData());
+            if ($this->Fertilizers->save($fertilizer)) {
+                $this->Flash->success(__('Your fertilizer has been updated.'));
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Unable to update your blog.'));
         }
-        $this->set(compact('village'));
+        $this->set(compact('fertilizer'));
     }
 }

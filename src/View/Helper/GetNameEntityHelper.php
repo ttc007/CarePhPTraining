@@ -16,4 +16,11 @@ class GetNameEntityHelper extends Helper{
         $season = $seasonQuery->findById($season_id)->first();
         return $season->get('name');
     }
+
+    public function getName($entity, $id){
+        $query = TableRegistry::get($entity);
+        // $query = TableRegistry::get($entity, ['className' => "App\Model\Table\\".$entity.'Table']);
+        $row = $query->findById($id)->first();
+        return $row->get('name');
+    }
 }

@@ -32,45 +32,28 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
 ?>
 <!DOCTYPE html>
 <html>
-<head>
-    <?= $this->Html->charset() ?>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        <?= $cakeDescription ?>
-    </title>
+    <head>
+        <?= $this->Html->charset() ?>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>
+            <?= $cakeDescription ?>
+        </title>
 
-    <?= $this->Html->meta('icon') ?>
-    <?= $this->Html->css('base.css') ?>
-    <?= $this->Html->css('style.css') ?>
-    <?= $this->Html->css('home.css') ?>
-    <link href="https://fonts.googleapis.com/css?family=Raleway:500i|Roboto:300,400,700|Roboto+Mono" rel="stylesheet">
-</head>
-<body class="home">
+        <?= $this->Html->meta('icon') ?>
+        <?= $this->Html->css('base.css') ?>
+        <?= $this->Html->css('style.css') ?>
+        <?= $this->Html->css('home.css') ?>
+        <link href="https://fonts.googleapis.com/css?family=Raleway:500i|Roboto:300,400,700|Roboto+Mono" rel="stylesheet">
+    </head>
+    <body class="home">
+        <div class="row">    
+            <?php
+                echo $this->Form->create($village);
+                echo $this->Form->control('name');
+                echo $this->Form->button(__('Lưu'));
+                echo $this->Form->end();
+            ?>
+        </div>
 
-<header class="row">
-    <!-- <div class="header-image"><?= $this->Html->image('cake.logo.svg') ?></div>
-    <div class="header-title">
-        <h1>Welcome to CakePHP <?= Configure::version() ?> Red Velvet. Build fast. Grow solid.</h1>
-    </div> -->
-</header>
-
-<div class="row">
-    <h3>Thêm mới Village</h3>
-</div>
-<div class="row">
-    <p>
-        Home <i class="fa fa-angle-right" style="display: inline-block;margin:0 15px"></i> 
-        <?= $this->Html->link('Villages', ['action' => 'index']) ?> 
-        <i class="fa fa-angle-right" style="display: inline-block;margin:0 15px"></i> Add</p>
-</div>
-<div class="row">    
-    <?php
-        echo $this->Form->create($village);
-        echo $this->Form->control('name');
-        echo $this->Form->button(__('Save Village'));
-        echo $this->Form->end();
-    ?>
-</div>
-
-</body>
+    </body>
 </html>

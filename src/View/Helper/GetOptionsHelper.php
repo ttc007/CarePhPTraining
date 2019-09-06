@@ -18,11 +18,21 @@ class GetOptionsHelper extends Helper
 
     public function getSeasonOptions(){
         $seasonQuery = TableRegistry::get('Seasons', ['className' => 'App\Model\Table\SeasonsTable']);
-        $seasons = $seasonQuery->find('all', ['order'=>'Seasons.id DESC'])->->all();
+        $seasons = $seasonQuery->find('all', ['order'=>'Seasons.id DESC'])->all();
         $seasonOptions = [];
         foreach ($seasons as $key => $season) {
             $seasonOptions[$season->get('id')] = $season->get('name');
         }
         return $seasonOptions;
+    }
+
+    public function get($entity){
+        $query = TableRegistry::get($entity, ['className' => 'App\Model\Table\\'.$entity.'Table']);
+        $rows = $query->find('all')->all();
+        $options = [];
+        foreach ($rows as $key => $row) {
+            $options[$row->get('id')] = $row->get('name');
+        }
+        return $options;
     }
 }

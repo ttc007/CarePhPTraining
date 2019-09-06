@@ -48,14 +48,17 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
     <body class="home">
         <div class="row">
             <?php
-                echo $this->Form->create($batch);
+                echo $this->Form->create($fertilizer);
                 // Hard code the user for now.
-                echo $this->Form->control('batch_id', ['type' => 'hidden', 'value' => $batch->id]);
+                echo $this->Form->control('fertilizer_id', ['type' => 'hidden', 'value' => $fertilizer->id]);
                 echo $this->Form->control('name');
+                echo $this->Form->control('price');
+                echo $this->Form->control('unit');
                 echo $this->Form->button(__('Lưu'));
+                echo $this->Html->link('Quay về', ['action' => 'index'], ['class'=> 'btn pull-right']) ;
                 echo $this->Form->end();
             ?>
         </div>
-
+        
     </body>
 </html>

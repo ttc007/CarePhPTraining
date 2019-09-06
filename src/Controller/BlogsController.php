@@ -34,7 +34,11 @@ class BlogsController extends AppController
         $this->loadComponent('Paginator');
         parent::initialize();
     }
-    
+    public function beforeFilter(Event $event)
+    {
+        $this->titleController = 'Tin tức';
+        parent::beforeFilter($event);
+    }
     public function index()
     {
         $blogs = $this->Paginator->paginate($this->Blogs->find());

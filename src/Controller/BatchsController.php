@@ -18,6 +18,7 @@ use Cake\Core\Configure;
 use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\View\Exception\MissingTemplateException;
+use Cake\Event\Event;
 
 /**
  * Static content controller
@@ -33,6 +34,11 @@ class BatchsController extends AppController
     {
         $this->loadComponent('Paginator');
         parent::initialize();
+    }
+    public function beforeFilter(Event $event)
+    {
+        $this->titleController = 'Đợt phát';
+        parent::beforeFilter($event);
     }
     
     public function index()

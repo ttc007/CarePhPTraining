@@ -32,47 +32,31 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
 ?>
 <!DOCTYPE html>
 <html>
-<head>
-    <?= $this->Html->charset() ?>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        <?= $cakeDescription ?>
-    </title>
+    <head>
+        <?= $this->Html->charset() ?>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>
+            <?= $cakeDescription ?>
+        </title>
 
-    <?= $this->Html->meta('icon') ?>
-    <?= $this->Html->css('base.css') ?>
-    <?= $this->Html->css('style.css') ?>
-    <?= $this->Html->css('home.css') ?>
-    <link href="https://fonts.googleapis.com/css?family=Raleway:500i|Roboto:300,400,700|Roboto+Mono" rel="stylesheet">
-</head>
-<body class="home">
-
-<header class="row">
-    <!-- <div class="header-image"><?= $this->Html->image('cake.logo.svg') ?></div>
-    <div class="header-title">
-        <h1>Welcome to CakePHP <?= Configure::version() ?> Red Velvet. Build fast. Grow solid.</h1>
-    </div> -->
-</header>
-
-<div class="row">
-    <h3 class="w-100">Chỉnh sửa Season</h3>
-    <p class="w-100">
-        Home 
-        <i class="fa fa-angle-right" style="display: inline-block;margin:0 15px"></i> 
-        <?= $this->Html->link('Seasons', ['action' => 'index']) ?> 
-        <i class="fa fa-angle-right" style="display: inline-block;margin:0 15px"></i> 
-        Edit
-    </p>
-    <?php
-        echo $this->Form->create($season);
-        // Hard code the user for now.
-        echo $this->Form->control('season_id', ['type' => 'hidden', 'value' => $season->id]);
-        echo $this->Form->control('name');
-        echo $this->Form->button(__('Save Season'));
-        echo $this->Html->link('Quay về', ['action' => 'index'], ['class'=> 'btn pull-right']) ;
-        echo $this->Form->end();
-    ?>
-</div>
-
-</body>
+        <?= $this->Html->meta('icon') ?>
+        <?= $this->Html->css('base.css') ?>
+        <?= $this->Html->css('style.css') ?>
+        <?= $this->Html->css('home.css') ?>
+        <link href="https://fonts.googleapis.com/css?family=Raleway:500i|Roboto:300,400,700|Roboto+Mono" rel="stylesheet">
+    </head>
+    <body class="home">
+        <div class="row">
+            <?php
+                echo $this->Form->create($season);
+                // Hard code the user for now.
+                echo $this->Form->control('season_id', ['type' => 'hidden', 'value' => $season->id]);
+                echo $this->Form->control('name');
+                echo $this->Form->button(__('Lưu'));
+                echo $this->Html->link('Quay về', ['action' => 'index'], ['class'=> 'btn pull-right']) ;
+                echo $this->Form->end();
+            ?>
+        </div>
+        
+    </body>
 </html>

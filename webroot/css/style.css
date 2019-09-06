@@ -617,9 +617,30 @@ table td {
     width: 100%;
 }
 input{
-    min-width: 500px;
+    /*min-width: 500px;*/
+    width: 100%;
 }
 form{
     border:1px solid #ccc;
     padding: 30px;
+    min-width: 400px;
+}
+fieldset{
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+.btn{
+    padding: 16px 32px;
+}
+.btn-filter{
+    margin-bottom:0!important;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: #1a8186;
+}
+.form-filter{
+    border:none;
+}
+.hidden{
+    display: none;
 }

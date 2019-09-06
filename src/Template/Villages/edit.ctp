@@ -46,27 +46,16 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
     <link href="https://fonts.googleapis.com/css?family=Raleway:500i|Roboto:300,400,700|Roboto+Mono" rel="stylesheet">
 </head>
 <body class="home">
-
-<header class="row">
-    <!-- <div class="header-image"><?= $this->Html->image('cake.logo.svg') ?></div>
-    <div class="header-title">
-        <h1>Welcome to CakePHP <?= Configure::version() ?> Red Velvet. Build fast. Grow solid.</h1>
-    </div> -->
-</header>
-
-<div class="row">
-    <h3 class="w-100">Chỉnh sửa Village</h3>
-    <p class="w-100">Home <i class="fa fa-angle-right" style="display: inline-block;margin:0 15px"></i> <?= $this->Html->link('Villages', ['action' => 'index']) ?> 
-        <i class="fa fa-angle-right" style="display: inline-block;margin:0 15px"></i> Edit</p>
-    <?php
-        echo $this->Form->create($village);
-        // Hard code the user for now.
-        echo $this->Form->control('village_id', ['type' => 'hidden', 'value' => $village->id]);
-        echo $this->Form->control('name');
-        echo $this->Form->button(__('Save Village'));
-        echo $this->Form->end();
-    ?>
-</div>
+    <div class="row">
+        <?php
+            echo $this->Form->create($village);
+            // Hard code the user for now.
+            echo $this->Form->control('village_id', ['type' => 'hidden', 'value' => $village->id]);
+            echo $this->Form->control('name');
+            echo $this->Form->button(__('Lưu'));
+            echo $this->Form->end();
+        ?>
+    </div>
 
 </body>
 </html>
