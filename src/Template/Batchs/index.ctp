@@ -53,6 +53,7 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
                     <th>Id</th>
                     <th>Tên đợt</th>
                     <th>Mùa vụ</th>
+                    <th>Ngày phát dự kiến</th>
                 </tr>
                 <?php foreach ($batchs as $batch): ?>
                     <tr>
@@ -64,6 +65,9 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
                         </td>
                         <td>
                             <?= $this->GetNameEntity->getSeasonName($batch->season_id) ?>
+                        </td>
+                        <td>
+                            <?= $batch->date_provide?$batch->date_provide:"-" ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>

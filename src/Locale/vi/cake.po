@@ -1,0 +1,35 @@
+msgid "January"
+msgstr "Tháng 1"
+
+msgid "February"
+msgstr "Tháng 2"
+
+msgid "March"
+msgstr "Tháng 3"
+
+msgid "April"
+msgstr "Tháng 4"
+
+msgid "May"
+msgstr "Tháng 5"
+
+msgid "June"
+msgstr "Tháng 6"
+
+msgid "July"
+msgstr "Tháng 7"
+
+msgid "August"
+msgstr "Tháng 8"
+
+msgid "September"
+msgstr "Tháng 9"
+
+msgid "October"
+msgstr "Tháng 10"
+
+msgid "November"
+msgstr "Tháng 11"
+
+msgid "December"
+msgstr "Tháng 12"

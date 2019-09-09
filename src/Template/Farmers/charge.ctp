@@ -47,7 +47,10 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
         <link href="https://fonts.googleapis.com/css?family=Raleway:500i|Roboto:300,400,700|Roboto+Mono" rel="stylesheet">
         <style type="text/css">
             .container{
-                max-width: 1300px;
+                max-width: 1500px;
+            }
+            .row{
+                max-width: 1500px;
             }
         </style>
     </head>
@@ -56,44 +59,42 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
             <div class="row">
                 <div class="col-md-4">
                     <?php
-                        echo $this->Form->control('season_id', ['type' => 'select','options'=>$this->GetOptions->getSeasonOptions(), 'label' => 'Mùa vụ'
-                            ,'value' => $season_id]);
+                        echo $this->Form->control('season_id', ['type' => 'select','options'=>$this->GetOptions->getSeasonOptions(), 'label' => 'Mùa vụ', 
+                        'value' => $season_id]);
                     ?>
                 </div>
                 <div class="col-md-4">
                     <?php
-                        echo $this->Form->control('village_id', ['type' => 'select','options'=>$this->GetOptions->getVillageOptions(), 'label'=> 'Khu/thôn'
-                            ,'value' => $village_id]);
+                        echo $this->Form->control('village_id', ['type' => 'select','options'=>$this->GetOptions->getVillageOptions(), 'label'=> 'Khu/thôn',
+                            'value' => $village_id]);
                     ?>
                 </div>
                 <div class="col-md-4">
                     <?php
-                        echo $this->Form->button(__('Lọc') , ['class'=>'btn-filter']);
+                        echo $this->Form->button(__('Tính tiền') , ['class'=>'btn-filter']);
                     ?>
                 </div>
             </div>
         <?php echo $this->Form->end(); ?>
         <div class="row">
             <div class="w-100 text-right">
-                <?= $this->Html->link('', ['action' => 'charge'], ['class'=> 'hidden', 'id' => 'urlCharge']) ;   ?>
-                <a class="charge" onclick="charge()">Tính tiền</a>
+                <?= $this->Html->link("", ['action' => 'chargeWard'], ['class'=> 'hidden', 'id' => 'urlChargeWard']) ?>
+                <a class="charge" onclick="chargeWard()">Tính tiền toàn bộ xã/thị trấn</a>
             </div>
-            <table class="table table-bordered table-striped">
+            <table class="table table-bordered table-striped" id='charge-table'>
                 <tr>
                     <th style="width: 50px">STT</th>
                     <th>Nông hộ</th>
                     <?php foreach ($batchs as $batch) : ?>
                         <th>
                             <?= $batch->name ?> (<?= $batch->date_provide ?>)
-                            <?php if($batch->isLock) {?> 
-                                <?= $this->Html->link("Mở sổ", ['action' => 'lockFarmerFertilizer', $batch->id, 0], ['class' => 'lock-farmer-fertilizer']) ?>
-                            <?php } else { ?>
-                                <?= $this->Html->link("Khóa sổ", ['action' => 'lockFarmerFertilizer', $batch->id, 1], ['class' => ' lock-farmer-fertilizer']) ?>
-                            <?php } ?>
                         </th>
                     <?php endforeach ?>
+                    <th style="width: 100px" class="text-right">Tổng cộng</th>
                 </tr>
+                <?php $totalVillage = 0; ?>
                 <?php foreach ($farmers as $key => $farmer): ?>
+                    <?php $totalSeason = 0; ?>
                     <tr>
                         <td><?= $key+1 ?></td>
                         <td>
@@ -102,26 +103,44 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
                             Số điện thoại: <?= $farmer->phone ?><br>
                             Khu/thôn: <?= $this->GetNameEntity->getVillageName($farmer->village_id) ?>
                         </td>
-                        <?php foreach ($batchs as $batch) : ?>
+                        <?php foreach ($batchs as $key => $batch) : ?>
                             <td>
+                                <?php $totalBatch = 0; ?>
                                 <?php foreach ($farmer->batchs[$batch->id] as $farmerFertilizer) : ?>
                                     <?= $this->GetNameEntity->getName('Fertilizers',  $farmerFertilizer->fertilizer_id) ?>: 
                                     <?= $farmerFertilizer->quantity ?> <?= $farmerFertilizer->unit ?><br>
+                                    <?php  $totalBatch += $farmerFertilizer->quantity*$farmerFertilizer->price  ?>
                                 <?php endforeach ?>
-                                <?php if(!$batch->isLock) {?> 
-                                    <?= $this->Html->link("+", ['action' => 'addFarmerFertilizer', $farmer->id,$batch->id ]) ?>
-                                <?php } ?>
+                                Tổng cộng: <span class="text-danger"><?= number_format($totalBatch) ?>đ </span>
+                                <?php $totalSeason += $totalBatch; ?>
                             </td>
                         <?php endforeach ?>
+                        <td class="text-right" >
+                            <?= $this->Html->link("", ['action' => 'chargeWard'], 
+                                ['class'=> 'hidden', 'id' => 'urlChargeFarmer']) ?>
+                            
+                            <a onclick="chargeFarmer()"><b class="text-danger total-farmer-batch"><?= number_format($totalSeason) ?>đ </b></a>
+                            <?php $totalVillage += $totalSeason; ?>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
+                <tr>
+                    <td colspan="<?= count($batchs)+2 ?>" class='text-center'>
+                        Tổng tiền của khu/thôn <b id="villageName"></b> - <b id="seasonName"></b>
+                    </td>
+                    <td class="text-right"><b class="text-danger total-farmer-batch"><?= number_format($totalVillage) ?>đ </b></td>
+                </tr>
             </table>
         </div>
         
     </body>
     <script type="text/javascript">
-        function charge() {
-            location.href = $("#urlCharge").attr('href') + "/" + $("#season-id").val() + "/" + $("#village-id").val();
+        function chargeWard() {
+            location.href = $("#urlChargeWard").attr('href') + "/" + $("#season-id").val();
         }
+        $(document).ready(function(){
+            $("#villageName").html("<?= $this->GetNameEntity->getName('Villages', $village_id) ?>");
+            $("#seasonName").html("<?= $this->GetNameEntity->getName('Seasons', $season_id) ?>");
+        });
     </script>
 </html>

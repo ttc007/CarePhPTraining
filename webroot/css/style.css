@@ -639,8 +639,32 @@ fieldset{
     background: #1a8186;
 }
 .form-filter{
-    border:none;
+    /*border:none;*/
+    padding-left: 0;
+    margin-bottom: 10px;
 }
 .hidden{
     display: none;
+}
+.date select{
+    padding-right: 59px;
+}
+.unit-fertilizer{
+    display: inline-block;
+    margin: 5px;font-size: 15px;
+}
+.lock-farmer-fertilizer{
+    display: inline-block;
+    float: right;
+    color: #aaa;
+    font-size: 12px;
+    font-weight: 100;
+}
+.charge{
+    display: block;
+    float: right;
+    color: #0071BC!important;
+    border: 1px solid #0071BC;
+    padding: 3px 10px;
+    margin-bottom: 10px;
 }

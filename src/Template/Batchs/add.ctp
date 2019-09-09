@@ -51,6 +51,10 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
                 echo $this->Form->create($batch);
                 echo $this->Form->control('name');
                 echo $this->Form->control('season_id', ['type' => 'select','options'=>$this->GetOptions->getSeasonOptions()]);
+                $this->Form->templates(
+                  ['dateWidget' => '{{day}}{{month}}{{year}}']
+                );
+                echo $this->Form->control('date_provide', ['type'=>'date', 'label'=>'Date provide']);
                 echo $this->Form->button(__('Lưu'));
                 echo $this->Html->link('Quay về', ['action' => 'index'], ['class'=> 'btn pull-right']) ;
                 echo $this->Form->end();

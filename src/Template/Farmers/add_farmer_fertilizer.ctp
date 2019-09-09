@@ -61,31 +61,52 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
                         - Mã số: <?= $farmer->id?> 
                     </p>
                     <h4 class="w-100">
-                        <?= $this->GetNameEntity->getName('Batchs',$farmerFertilizer->batch_id) ?> - 
+                        <?= $batch->name ?> - 
                         <?= $farmerFertilizer->season->name ?>
-                        <a onclick="addFarmerFertilizer()" style="color: #367bbf"><i class="fa fa-plus"></i></a><br> 
                     </h4>
+                    <!-- <h5 class="w-100 text-muted">Ngày cấp phát dự kiến: <?= $batch->date_provide ?></h5> -->
                     <input type="hidden" name="farmer_id" id='farmer_id' value="<?=$farmer->id?>" />
                     <input type="hidden" name="batch_id" id='batch_id' value="<?=$farmerFertilizer->batch_id?>" />
                     <input type="hidden" name="farmer_id" id='farmer_id' value="<?=$farmerFertilizer->season->id?>" />
                     <?= $this->Html->link('', ['action' => 'allocationFertilizer'], ['class'=> 'btn hidden', 'id' => 'urlAllocationFertilizer']) ;   ?>
+                    <?= $this->Html->link('', ['controller' => 'Api\RestFertilizers','action' => 'index'], ['class'=> 'btn hidden', 'id' => 'urlApiFertilizer']) ;   ?>
                 </div>
             </div>
-            <div class="w-100 mt-5" id='divFertilizer'>
+            <div class="w-100 mt-3 row">
+                <div class="col-md-12">
+                    <a onclick="addFarmerFertilizer()" style="color: #367bbf"><i class="fa fa-plus"></i></a>
+                </div>
+            </div>
+            <div class="w-100 mt-1" id='divFertilizer'>
                 <?php foreach ($farmerFertilizers as $key => $farmerFertilizer): ?>
                     <div class="row rowFertilizer">
                         <div class="col-md-6">
-                            <?= $this->Form->control('fertilizer_id', ['type' => 'select','options'=>$this->GetOptions->get('Fertilizers'),'label'=>'', 'value' => $farmerFertilizer->fertilizer_id]);?>
+                            <?= $this->Form->control('fertilizer_id', ['type' => 'select','options'=>$this->GetOptions->get('Fertilizers'),'label'=>'', 'value' => $farmerFertilizer->fertilizer_id, 'class' => 'select-fertilizer', 'onclick' =>  'selectFertilizerChange(this)']);?>
                         </div>
                         <div class="col-md-3">
                             <?= $this->Form->control('quantity',['label'=>'', 'value' => $farmerFertilizer->quantity, 'class' => 'text-right w-75 pull-left', 'min'=>'0']);?>
-                            <span style="display: inline-block;margin: 5px;font-size: 15px">Kg</span>
+                            <span class='unit-fertilizer' >Kg</span>
                         </div>
                         <div class="col-md-2">
                             <a onclick="removeFarmerFertilizer(this)"><i class="fa fa-remove"></i></a>
                         </div>
                     </div>
                 <?php endforeach; ?>
+                <?php if(count($farmerFertilizers)==0){ ?>
+                    <div class="row rowFertilizer">
+                        <div class="col-md-6">
+                            <?= $this->Form->control('fertilizer_id', ['type' => 'select','options'=>$this->GetOptions->get('Fertilizers'),'label'=>'',
+                             'class' => 'select-fertilizer', 'onclick' =>  'selectFertilizerChange(this)']);?>
+                        </div>
+                        <div class="col-md-3">
+                            <?= $this->Form->control('quantity',['label'=>'', 'value' => 0, 'class' => 'text-right w-75 pull-left', 'min'=>'0']);?>
+                            <span class='unit-fertilizer' >Kg</span>
+                        </div>
+                        <div class="col-md-2">
+                            <a onclick="removeFarmerFertilizer(this)"><i class="fa fa-remove"></i></a>
+                        </div>
+                    </div>
+                <?php } ?>
             </div>
             <div class="row">
                 <div class="col-md-12">
@@ -101,20 +122,37 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
     </body>
     <script type="text/javascript">
         function addFarmerFertilizer(){
-            $("#divFertilizer").append(`
-                <div class="row rowFertilizer"> 
-                    <div class="col-md-6">
-                        <?= $this->Form->control('fertilizer_id', ['type' => 'select','options'=>$this->GetOptions->get('Fertilizers'),'label'=>'']);?>
-                    </div>
-                    <div class="col-md-3">
-                        <?= $this->Form->control('quantity',['label'=>'', 'value' => 0, 'class' => 'text-right w-75 pull-left', 'min'=>'0']);?>
-                        <span style="display: inline-block;margin: 5px;font-size: 15px">Kg</span>
-                    </div>
-                    <div class="col-md-2">
-                        <a onclick="removeFarmerFertilizer(this)"><i class="fa fa-remove"></i></a>
-                    </div>
-                </div>
-            `);
+            $.ajax({
+                url: $("#urlApiFertilizer").attr('href'),
+                type: "GET",
+                dataType:'json',
+                success:function(data){
+                    if(data.fertilizers.length > $(".rowFertilizer").length){
+                        var rowFertilizer = $(`
+                            <div class="row rowFertilizer"> 
+                                <div class="col-md-6">
+                                    <?= $this->Form->control('fertilizer_id', ['type' => 'select','options'=>$this->GetOptions->get('Fertilizers'),'label'=>'','class' => 'select-fertilizer', 'onclick' =>  'selectFertilizerChange(this)']);?>
+                                </div>
+                                <div class="col-md-3">
+                                    <?= $this->Form->control('quantity',['label'=>'', 'value' => 0, 'class' => 'text-right w-75 pull-left', 'min'=>'0']);?>
+                                    <span class='unit-fertilizer'>Kg</span>
+                                </div>
+                                <div class="col-md-2">
+                                    <a onclick="removeFarmerFertilizer(this)"><i class="fa fa-remove"></i></a>
+                                </div>
+                            </div>
+                        `);
+                        $.each($(".select-fertilizer") , function(i, selectfertilizerBefore){
+                            $(rowFertilizer).find(".select-fertilizer option[value="+$(selectfertilizerBefore).val()+"]").remove();
+                        });
+                        $("#divFertilizer").append(rowFertilizer);
+                        selectFertilizerChange(rowFertilizer.find(".select-fertilizer"));
+                    } else {
+                        alert("Số lượng chủng loại phân đã đạt giới hạn!!!");
+                    }
+                }
+            });
+            
         }
         function removeFarmerFertilizer(obj){
             $(obj).closest("div.rowFertilizer").remove();
@@ -142,6 +180,19 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
                 },
                 success:function(data){
                     location.href = $("#formGetToken").attr("action");
+                }
+            });
+        }
+
+        function selectFertilizerChange(obj){
+            $.ajax({
+                url: $("#urlApiFertilizer").attr('href')+"/get/"+$(obj).val(),
+                type: "GET",
+                dataType:'json',
+                success:function(data){
+                    var rowFertilizer = $(obj).closest(".rowFertilizer");
+                    var unit = $(rowFertilizer).find(".unit-fertilizer");
+                    unit.html(data.fertilizer.unit);
                 }
             });
         }

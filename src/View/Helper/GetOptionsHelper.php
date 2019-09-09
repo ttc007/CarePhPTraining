@@ -27,7 +27,7 @@ class GetOptionsHelper extends Helper
     }
 
     public function get($entity){
-        $query = TableRegistry::get($entity, ['className' => 'App\Model\Table\\'.$entity.'Table']);
+        $query = TableRegistry::get($entity);
         $rows = $query->find('all')->all();
         $options = [];
         foreach ($rows as $key => $row) {

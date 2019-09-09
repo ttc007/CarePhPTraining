@@ -34,8 +34,12 @@ class AppController extends Controller
                 $pageTitle = "Thêm mới";
             } elseif($action=='edit'){
                 $pageTitle = "Chỉnh sửa";
-            } else {
+            } elseif($action == 'addFarmerFertilizer') {
                 $pageTitle = "Cấp phát";
+            } elseif($action == 'charge') {
+                $pageTitle = "Tính tiền";
+            } else {
+                $pageTitle = "Tính tiền toàn bộ xã/thị trấn";
             }
             $hierarchys[] = ['title' => $pageTitle];
         } else {
