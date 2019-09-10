@@ -668,3 +668,9 @@ fieldset{
     padding: 3px 10px;
     margin-bottom: 10px;
 }
+.pageTitle{
+    text-transform: lowercase;
+}
+.pageTitle:first-letter{
+    text-transform: uppercase;
+}

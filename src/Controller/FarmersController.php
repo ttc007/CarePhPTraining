@@ -213,7 +213,7 @@ class FarmersController extends AppController
                             'FarmerFertilizers.batch_id' => $batch->id,
                             'FarmerFertilizers.village_id' => $village->id
                         ]
-                     ]
+                    ]
                 );
                 $query->select(['total' => $query->func()->sum('total')]);
                 $village->totalBatchs[$batch->id] = $query->first();
@@ -221,5 +221,21 @@ class FarmersController extends AppController
             }
         }
         $this->set(compact('season_id', 'villages', 'batchs'));
+    }
+
+    public function chargeFarmer($farmer_id, $season_id){
+        $farmer = $this->Farmers->findById($farmer_id)->first();
+        $farmer->batchs = [];
+        $batchs = $this->batchQuery->find()->where(['season_id ='=> $season_id])->all();
+        foreach ($batchs as $batch) {
+            $farmer->batchs[$batch->id] = $this->farmerFertilizersQuery->find()
+                                    ->where([
+                                        'farmer_id' => $farmer_id, 
+                                        'batch_id' => $batch->id
+                                    ])->all();
+            $this->log($farmer->batchs, 'debug');
+        }
+        $season = $this->seasonQuery->findById($season_id)->first();
+        $this->set(compact('farmer', 'batchs', 'season'));
     }
 }

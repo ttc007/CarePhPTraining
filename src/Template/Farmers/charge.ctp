@@ -116,10 +116,9 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
                             </td>
                         <?php endforeach ?>
                         <td class="text-right" >
-                            <?= $this->Html->link("", ['action' => 'chargeWard'], 
+                            <?= $this->Html->link("", ['action' => 'chargeFarmer'], 
                                 ['class'=> 'hidden', 'id' => 'urlChargeFarmer']) ?>
-                            
-                            <a onclick="chargeFarmer()"><b class="text-danger total-farmer-batch"><?= number_format($totalSeason) ?>đ </b></a>
+                            <a onclick="chargeFarmer(<?= $farmer->id ?>)"><b class="text-danger total-farmer-batch"><?= number_format($totalSeason) ?>đ </b></a>
                             <?php $totalVillage += $totalSeason; ?>
                         </td>
                     </tr>
@@ -142,5 +141,8 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
             $("#villageName").html("<?= $this->GetNameEntity->getName('Villages', $village_id) ?>");
             $("#seasonName").html("<?= $this->GetNameEntity->getName('Seasons', $season_id) ?>");
         });
+        function chargeFarmer(farmer_id){
+            location.href = $("#urlChargeFarmer").attr('href') + "/" + farmer_id + "/" + $("#season-id").val();
+        }
     </script>
 </html>

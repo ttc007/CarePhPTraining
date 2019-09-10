@@ -72,7 +72,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         <div class="row mt-4">
             <?php echo $this->element('breadcrumb',[
             'hierarchys' => $hierarchys]); ?>
-            <h3>
+            <h3 class="pageTitle">
                 <?= $pageTitle ?> 
                 <?php if($this->request->params['action']=='index'):?>
                     <?= $this->Html->link("+", ['action' => 'add']) ?>
