@@ -55,7 +55,7 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
         </style>
     </head>
     <body class="home">
-        <div class="row">
+        <div class="row pb-5">
             <div class="w-100 text-center">
                 <h4>Cashing </h4>
                 <h3><?= $farmer->name ?></h3>
@@ -89,11 +89,19 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
                         </tr>
                     <?php endforeach ?>
                     <tr>
-                        <td colspan="4" class="text-center"><b>Tổng cộng <?= $batch->name ?></b></td>
+                        <td colspan="4" class="text-center"><b>Tổng <?= $batch->name ?></b></td>
                         <td class="text-right"><b class="text-danger"><?= number_format($totalBatch) ?>đ</b></td>
+                        <?php $totalFarmer += $totalBatch; ?>
                     </tr>
                 </table>
             <?php endforeach ?>
+
+            <table class="table table-bordered table-striped mt-5">
+                <tr>
+                    <td colspan="4" class="text-center"><h5>Tổng <b><?= $season->name ?></b></h5></td>
+                    <td class="text-right"><h5><b class="text-danger"><?= number_format($totalFarmer) ?>đ</b></h5></td>
+                </tr>
+            </table>
         </div>
         
     </body>
