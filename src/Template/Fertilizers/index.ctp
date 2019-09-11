@@ -50,15 +50,15 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
         <div class="row">
             <table>
                 <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>Price</th>
-                    <th>Unit</th>
+                    <th>STT</th>
+                    <th>Tên</th>
+                    <th>Giá</th>
+                    <th>Đơn vị</th>
                 </tr>
-                <?php foreach ($fertilizers as $fertilizer): ?>
+                <?php foreach ($fertilizers as $key => $fertilizer): ?>
                     <tr>
                         <td>
-                            <?= $this->Html->link($fertilizer->id, ['action' => 'edit', $fertilizer->id]) ?>
+                            <?= $this->Html->link($key+1, ['action' => 'edit', $fertilizer->id]) ?>
                         </td>
                         <td>
                             <?= $this->Html->link($fertilizer->get('name'), ['action' => 'edit', $fertilizer->id]) ?>

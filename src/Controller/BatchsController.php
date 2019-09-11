@@ -43,7 +43,7 @@ class BatchsController extends AppController
     
     public function index()
     {
-        $batchs = $this->Paginator->paginate($this->Batchs->find());
+        $batchs = $this->Paginator->paginate($this->Batchs->find()->where(['ward_id' => $this->ward_id]));
         $this->set(compact('batchs'));
     }
 
@@ -52,9 +52,9 @@ class BatchsController extends AppController
         $batch = $this->Batchs->newEntity();
         if ($this->request->is('post')) {
             $batch = $this->Batchs->patchEntity($batch, $this->request->getData());
-             
+            $batch->ward_id = $this->ward_id;
             if ($this->Batchs->save($batch)) {
-                $this->Flash->success(__('Your batch has been saved.'));
+                $this->Flash->success(__('Thông tin đợt cấp phát đã được lưu'));
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Unable to add your blog.'));
@@ -68,7 +68,7 @@ class BatchsController extends AppController
         if ($this->request->is(['post', 'put'])) {
             $batch = $this->Batchs->patchEntity($batch, $this->request->getData());
             if ($this->Batchs->save($batch)) {
-                $this->Flash->success(__('Your batch has been updated.'));
+                $this->Flash->success(__('Thông tin đợt cấp phát đã được cập nhật'));
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Unable to update your blog.'));

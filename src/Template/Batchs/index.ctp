@@ -50,15 +50,15 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
         <div class="row">
             <table>
                 <tr>
-                    <th>Id</th>
+                    <th>STT</th>
                     <th>Tên đợt</th>
                     <th>Mùa vụ</th>
                     <th>Ngày phát dự kiến</th>
                 </tr>
-                <?php foreach ($batchs as $batch): ?>
+                <?php foreach ($batchs as $key => $batch): ?>
                     <tr>
                         <td>
-                            <?= $this->Html->link($batch->id, ['action' => 'edit', $batch->id]) ?>
+                            <?= $this->Html->link($key+1, ['action' => 'edit', $batch->id]) ?>
                         </td>
                         <td>
                             <?= $this->Html->link($batch->name, ['action' => 'edit', $batch->id]) ?>

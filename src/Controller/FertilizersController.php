@@ -42,7 +42,7 @@ class FertilizersController extends AppController
     }
     public function index()
     {
-        $fertilizers = $this->Paginator->paginate($this->Fertilizers->find());
+        $fertilizers = $this->Paginator->paginate($this->Fertilizers->find()->where(['ward_id' => $this->ward_id]));
         $this->set(compact('fertilizers'));
     }
 
@@ -51,9 +51,9 @@ class FertilizersController extends AppController
         $fertilizer = $this->Fertilizers->newEntity();
         if ($this->request->is('post')) {
             $fertilizer = $this->Fertilizers->patchEntity($fertilizer, $this->request->getData());
-             
+            $fertilizer->ward_id = $this->ward_id;
             if ($this->Fertilizers->save($fertilizer)) {
-                $this->Flash->success(__('Your fertilizer has been saved.'));
+                $this->Flash->success(__('Thông tin đã được lưu'));
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Unable to add your blog.'));
@@ -67,7 +67,7 @@ class FertilizersController extends AppController
         if ($this->request->is(['post', 'put'])) {
             $this->Fertilizers->patchEntity($fertilizer, $this->request->getData());
             if ($this->Fertilizers->save($fertilizer)) {
-                $this->Flash->success(__('Your fertilizer has been updated.'));
+                $this->Flash->success(__('Thông tin đã được cập nhật'));
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Unable to update your blog.'));

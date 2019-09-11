@@ -3,16 +3,19 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Event\Event;
+use Cake\Log\Log;
 
 class AppController extends Controller
 {
     var $titleController = '';
+    var $ward_id;
+
     public function initialize()
     {
         $this->loadComponent('Flash');
         $this->loadComponent('Auth', [
             'loginRedirect' => [
-                'controller' => 'Users',
+                'controller' => 'Farmers',
                 'action' => 'index'
             ],
             'logoutRedirect' => [
@@ -20,6 +23,8 @@ class AppController extends Controller
                 'action' => 'login'
             ]
         ]);
+
+        $this->ward_id = $this->request->getSession()->read('User.Ward.id');
     }
 
     public function beforeFilter(Event $event)

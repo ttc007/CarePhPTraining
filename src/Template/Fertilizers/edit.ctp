@@ -51,9 +51,9 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
                 echo $this->Form->create($fertilizer);
                 // Hard code the user for now.
                 echo $this->Form->control('fertilizer_id', ['type' => 'hidden', 'value' => $fertilizer->id]);
-                echo $this->Form->control('name');
-                echo $this->Form->control('price');
-                echo $this->Form->control('unit');
+                echo $this->Form->control('name', ['label' => 'Tên']);
+                echo $this->Form->control('price', ['label' => 'Giá']);
+                echo $this->Form->control('unit',['label' => 'Đơn vị']);
                 echo $this->Form->button(__('Lưu'));
                 echo $this->Html->link('Quay về', ['action' => 'index'], ['class'=> 'btn pull-right']) ;
                 echo $this->Form->end();

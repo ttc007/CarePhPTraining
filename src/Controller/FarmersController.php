@@ -36,6 +36,7 @@ class FarmersController extends AppController
     var $batchQuery;
     var $fertilizerQuery;
     var $villageQuery;
+    var $wardQuery;
 
     public function initialize()
     {
@@ -46,6 +47,7 @@ class FarmersController extends AppController
         $this->batchQuery = TableRegistry::get('Batchs', ['className' => 'App\Model\Table\BatchsTable']);
         $this->fertilizerQuery = TableRegistry::get('Fertilizers', ['className' => 'App\Model\Table\FertilizersTable']);
         $this->villageQuery = TableRegistry::get('Villages', ['className' => 'App\Model\Table\VillagesTable']);
+        $this->wardQuery = TableRegistry::get('Wards', ['className' => 'App\Model\Table\WardsTable']);
     }
     public function beforeFilter(Event $event)
     {
@@ -66,20 +68,20 @@ class FarmersController extends AppController
             if($session->read('Season.id')){
                 $season_id = $session->read('Season.id');
             } else {
-                $season_id = $this->seasonQuery->find('all', ['order'=>'Seasons.id DESC'])->first()->id;
+                $season_id = $this->seasonQuery->find('all', ['order'=>'Seasons.id DESC'])->where(['ward_id'=>$this->ward_id])->first()->id;
             }
             
             if($session->read('Village.id')){
                 $village_id = $session->read('Village.id');
             } else {
-                $village_id = $this->villageQuery->find()->first()->id;
+                $village_id = $this->villageQuery->find()->where(['ward_id' => $this->ward_id])->first()->id;
             }
         }
         $batchQuery = TableRegistry::get('Batchs', ['className' => 'App\Model\Table\BatchsTable']);
         $batchs = $batchQuery->find()->where(['season_id ='=> $season_id])->all();
         $farmerFertilizersQuery = TableRegistry::get('FarmerFertilizers', ['className' => 'App\Model\Table\FarmerFertilizersTable']);
 
-        $farmers = $this->Farmers->find()->where(['village_id ='=> $village_id]);
+        $farmers = $this->Farmers->find()->where(['village_id =' => $village_id]);
         $farmers = $this->Paginator->paginate($farmers);
         foreach ($farmers as $farmer) {
             $farmer->batchs = [];
@@ -100,7 +102,7 @@ class FarmersController extends AppController
             $farmer = $this->Farmers->patchEntity($farmer, $this->request->getData());
              
             if ($this->Farmers->save($farmer)) {
-                $this->Flash->success(__('Your farmer has been saved.'));
+                $this->Flash->success(__('Thông tin nông hộ đã được lưu'));
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Unable to add your FarmerFertilizers.'));
@@ -114,7 +116,7 @@ class FarmersController extends AppController
         if ($this->request->is(['post', 'put'])) {
             $farmer = $this->Farmers->patchEntity($farmer, $this->request->getData());
             if ($this->Farmers->save($farmer)) {
-                $this->Flash->success(__('Your farmer has been updated.'));
+                $this->Flash->success(__('Thông tin nông hộ đã được cập nhật'));
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Unable to update your FarmerFertilizers.'));
@@ -199,7 +201,7 @@ class FarmersController extends AppController
     }
 
     public function chargeWard($season_id){
-        $villages = $this->villageQuery->find()->all();
+        $villages = $this->villageQuery->find()->where(['ward_id' => $this->ward_id])->all();
         if ($this->request->is('post')) {
             $season_id = $this->request->getData()['season_id'];
         }
@@ -220,7 +222,8 @@ class FarmersController extends AppController
                 $this->log($village->totalBatchs[$batch->id], 'debug');
             }
         }
-        $this->set(compact('season_id', 'villages', 'batchs'));
+        $ward = $this->wardQuery->findById($this->ward_id)->first();
+        $this->set(compact('season_id', 'villages', 'batchs', 'ward'));
     }
 
     public function chargeFarmer($farmer_id, $season_id){

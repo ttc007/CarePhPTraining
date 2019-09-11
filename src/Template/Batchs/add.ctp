@@ -49,12 +49,12 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
         <div class="row">
             <?php
                 echo $this->Form->create($batch);
-                echo $this->Form->control('name');
-                echo $this->Form->control('season_id', ['type' => 'select','options'=>$this->GetOptions->getSeasonOptions()]);
+                echo $this->Form->control('name', ['label' => 'Tên']);
+                echo $this->Form->control('season_id', ['type' => 'select','options'=>$this->GetOptions->get('Seasons'), 'label' => 'Mùa vụ']);
                 $this->Form->templates(
                   ['dateWidget' => '{{day}}{{month}}{{year}}']
                 );
-                echo $this->Form->control('date_provide', ['type'=>'date', 'label'=>'Date provide']);
+                echo $this->Form->control('date_provide', ['type'=>'date', 'label'=>'Ngày cấp phát dự kiến']);
                 echo $this->Form->button(__('Lưu'));
                 echo $this->Html->link('Quay về', ['action' => 'index'], ['class'=> 'btn pull-right']) ;
                 echo $this->Form->end();

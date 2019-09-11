@@ -56,7 +56,6 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
 </header>
 
 <div class="row">
-    <h3>Danh sách User</h3>
     <table class="table">
         <tr>
             <th>Tên đăng nhập</th>
@@ -83,7 +82,6 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
                 echo $this->Paginator->prev('«', [], [], array('class' => 'disabled')); 
                 echo $this->Paginator->numbers(); 
                 echo $this->Paginator->next('»', [], [], array('class' => 'disabled'));
-                
             ?>
         </ul>
         <div class="paginate-count">

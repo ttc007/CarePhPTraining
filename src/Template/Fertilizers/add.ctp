@@ -49,9 +49,9 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
         <div class="row">    
             <?php
                 echo $this->Form->create($fertilizer);
-                echo $this->Form->control('name');
-                echo $this->Form->control('price');
-                echo $this->Form->control('unit',['value' => 'Kg']);
+                echo $this->Form->control('name', ['label' => 'Tên']);
+                echo $this->Form->control('price', ['label' => 'Giá']);
+                echo $this->Form->control('unit',['value' => 'Kg', 'label' => 'Đơn vị']);
                 echo $this->Form->button(__('Lưu'));
                 echo $this->Html->link('Quay về', ['action' => 'index'], ['class'=> 'btn pull-right']) ;
                 echo $this->Form->end();

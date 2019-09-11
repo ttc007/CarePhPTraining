@@ -42,7 +42,7 @@ class SeasonsController extends AppController
     }
     public function index()
     {
-        $seasons = $this->Paginator->paginate($this->Seasons->find());
+        $seasons = $this->Seasons->find()->where(['ward_id' => $this->ward_id])->all();
         $this->set(compact('seasons'));
     }
 
@@ -51,9 +51,9 @@ class SeasonsController extends AppController
         $season = $this->Seasons->newEntity();
         if ($this->request->is('post')) {
             $season = $this->Seasons->patchEntity($season, $this->request->getData());
-             
+            $season->ward_id = $this->ward_id;
             if ($this->Seasons->save($season)) {
-                $this->Flash->success(__('Your season has been saved.'));
+                $this->Flash->success(__('Thông tin mùa vụ đã được lưu'));
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Unable to add your blog.'));
@@ -67,7 +67,7 @@ class SeasonsController extends AppController
         if ($this->request->is(['post', 'put'])) {
             $this->Seasons->patchEntity($season, $this->request->getData());
             if ($this->Seasons->save($season)) {
-                $this->Flash->success(__('Your season has been updated.'));
+                $this->Flash->success(__('Thông tin mùa vụ đã được cập nhật'));
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Unable to update your blog.'));

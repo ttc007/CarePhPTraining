@@ -51,9 +51,9 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
                 echo $this->Form->create($farmer);
                 // Hard code the user for now.
                 echo $this->Form->control('farmer_id', ['type' => 'hidden', 'value' => $farmer->id]);
-                echo $this->Form->control('name');
-                echo $this->Form->control('phone');
-                echo $this->Form->control('village_id', ['type' => 'select','options'=>$this->GetOptions->getVillageOptions()]);
+                echo $this->Form->control('name', ['label' => 'Tên']);
+                echo $this->Form->control('phone', ['label' => 'Số điện thoại']);
+                echo $this->Form->control('village_id', ['type' => 'select','options'=>$this->GetOptions->get('Villages'), 'label' => 'Thôn/khu']);
                 echo $this->Form->button(__('Lưu'));
                 echo $this->Html->link('Quay về', ['action' => 'index'], ['class'=> 'btn pull-right']) ;
                 echo $this->Form->end();

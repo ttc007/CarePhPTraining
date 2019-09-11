@@ -50,13 +50,13 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
         <div class="row">
             <table>
                 <tr>
-                    <th>Id</th>
-                    <th>Name</th>
+                    <th>STT</th>
+                    <th>Tên</th>
                 </tr>
-                <?php foreach ($villages as $village): ?>
+                <?php foreach ($villages as $key => $village): ?>
                     <tr>
                         <td>
-                            <?= $this->Html->link($village->id, ['action' => 'edit', $village->id]) ?>
+                            <?= $this->Html->link($key+1, ['action' => 'edit', $village->id]) ?>
                         </td>
                         <td>
                             <?= $this->Html->link($village->get('name'), ['action' => 'edit', $village->id]) ?>

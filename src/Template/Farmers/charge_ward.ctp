@@ -55,21 +55,6 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
         </style>
     </head>
     <body class="home">
-        <!-- <?php echo $this->Form->create( null ,['class'=>'form-filter']); ?>
-            <div class="row">
-                <div class="col-md-4">
-                    <?php
-                        echo $this->Form->control('season_id', ['type' => 'select','options'=>$this->GetOptions->getSeasonOptions(), 'label' => 'Mùa vụ', 
-                        'value' => $season_id]);
-                    ?>
-                </div>
-                <div class="col-md-4">
-                    <?php
-                        echo $this->Form->button(__('Tính tiền') , ['class'=>'btn-filter']);
-                    ?>
-                </div>
-            </div>
-        <?php echo $this->Form->end(); ?> -->
         <div class="row">
             <div class="w-100 text-right">
                 <?= $this->Html->link("Quay về", ['action' => 'index'], ['class'=> '', 'id' => '']) ?>

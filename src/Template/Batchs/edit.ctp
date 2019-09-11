@@ -51,11 +51,12 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
                 echo $this->Form->create($batch);
                 // Hard code the user for now.
                 echo $this->Form->control('batch_id', ['type' => 'hidden', 'value' => $batch->id]);
-                echo $this->Form->control('name');
+                echo $this->Form->control('name', ['label' => 'Tên']);
+                echo $this->Form->control('season_id', ['type' => 'select','options'=>$this->GetOptions->get('Seasons'), 'label' => 'Mùa vụ']);
                 $this->Form->templates(
                   ['dateWidget' => '{{day}}{{month}}{{year}}']
                 );
-                echo $this->Form->control('date_provide', ['type'=>'date', 'label'=>'Date provide']);
+                echo $this->Form->control('date_provide', ['type'=>'date', 'label'=>'Ngày cấp phát dự kiến']);
                 echo $this->Form->button(__('Lưu'));
                 echo $this->Html->link('Quay về', ['action' => 'index'], ['class'=> 'btn pull-right']) ;
                 echo $this->Form->end();

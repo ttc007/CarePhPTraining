@@ -63,9 +63,10 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
             <?= $this->Form->control('username') ?>
             <?= $this->Form->control('password') ?>
             <?= $this->Form->control('confirmPassword', ['type'=>'password']) ?>
-            <?= $this->Form->control('role', [
+            <!-- <?= $this->Form->control('role', [
                 'options' => ['admin' => 'Admin', 'author' => 'Author']
-            ]) ?>
+            ]) ?> -->
+            <?= $this->Form->control('ward') ?>
             <?= $this->Form->button(__('Submit')); ?>
        </fieldset>
     

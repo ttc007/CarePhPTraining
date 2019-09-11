@@ -29,7 +29,6 @@ use Cake\Event\Event;
  */
 class VillagesController extends AppController
 {
-
     public function initialize()
     {
         $this->loadComponent('Paginator');
@@ -43,7 +42,7 @@ class VillagesController extends AppController
     
     public function index()
     {
-        $villages = $this->Paginator->paginate($this->Villages->find());
+        $villages = $this->Villages->find()->where(['ward_id' => $this->ward_id])->all();
         $this->set(compact('villages'));
     }
 
@@ -52,9 +51,9 @@ class VillagesController extends AppController
         $village = $this->Villages->newEntity();
         if ($this->request->is('post')) {
             $village = $this->Villages->patchEntity($village, $this->request->getData());
-             
+            $village->ward_id = $this->ward_id;
             if ($this->Villages->save($village)) {
-                $this->Flash->success(__('Your village has been saved.'));
+                $this->Flash->success(__('Thông tin thôn/khu đã được lưu'));
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Unable to add your blog.'));
@@ -68,7 +67,7 @@ class VillagesController extends AppController
         if ($this->request->is(['post', 'put'])) {
             $this->Villages->patchEntity($village, $this->request->getData());
             if ($this->Villages->save($village)) {
-                $this->Flash->success(__('Your village has been updated.'));
+                $this->Flash->success(__('Thông tin thôn/khu đã được cập nhật'));
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Unable to update your blog.'));

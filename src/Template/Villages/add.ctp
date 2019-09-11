@@ -49,7 +49,7 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
         <div class="row">    
             <?php
                 echo $this->Form->create($village);
-                echo $this->Form->control('name');
+                echo $this->Form->control('name', ['label' => 'Tên']);
                 echo $this->Form->button(__('Lưu'));
                 echo $this->Form->end();
             ?>

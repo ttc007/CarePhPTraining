@@ -51,7 +51,7 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
             echo $this->Form->create($village);
             // Hard code the user for now.
             echo $this->Form->control('village_id', ['type' => 'hidden', 'value' => $village->id]);
-            echo $this->Form->control('name');
+            echo $this->Form->control('name', ['label' => 'Tên']);
             echo $this->Form->button(__('Lưu'));
             echo $this->Form->end();
         ?>

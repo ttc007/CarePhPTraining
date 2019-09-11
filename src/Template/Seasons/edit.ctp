@@ -51,7 +51,7 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
                 echo $this->Form->create($season);
                 // Hard code the user for now.
                 echo $this->Form->control('season_id', ['type' => 'hidden', 'value' => $season->id]);
-                echo $this->Form->control('name');
+                echo $this->Form->control('name', ['label' => 'Tên']);
                 echo $this->Form->button(__('Lưu'));
                 echo $this->Html->link('Quay về', ['action' => 'index'], ['class'=> 'btn pull-right']) ;
                 echo $this->Form->end();

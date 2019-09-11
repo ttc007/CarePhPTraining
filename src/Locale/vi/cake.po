@@ -33,3 +33,6 @@ msgstr "Tháng 11"
 
 msgid "December"
 msgstr "Tháng 12"
+
+msgid "Unable to update your blog."
+msgstr "Không lưu được thông tin."

@@ -59,13 +59,13 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
             <div class="row">
                 <div class="col-md-4">
                     <?php
-                        echo $this->Form->control('season_id', ['type' => 'select','options'=>$this->GetOptions->getSeasonOptions(), 'label' => 'Mùa vụ', 
+                        echo $this->Form->control('season_id', ['type' => 'select','options'=>$this->GetOptions->get('Seasons'), 'label' => 'Mùa vụ', 
                         'value' => $season_id]);
                     ?>
                 </div>
                 <div class="col-md-4">
                     <?php
-                        echo $this->Form->control('village_id', ['type' => 'select','options'=>$this->GetOptions->getVillageOptions(), 'label'=> 'Khu/thôn',
+                        echo $this->Form->control('village_id', ['type' => 'select','options'=>$this->GetOptions->get('Villages'), 'label'=> 'Khu/thôn',
                             'value' => $village_id]);
                     ?>
                 </div>

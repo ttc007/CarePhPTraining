@@ -50,13 +50,13 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
         <div class="row">
             <table>
                 <tr>
-                    <th>Id</th>
-                    <th>Name</th>
+                    <th>STT</th>
+                    <th>Tên</th>
                 </tr>
-                <?php foreach ($seasons as $season): ?>
+                <?php foreach ($seasons as $key => $season): ?>
                     <tr>
                         <td>
-                            <?= $this->Html->link($season->id, ['action' => 'edit', $season->id]) ?>
+                            <?= $this->Html->link($key+1, ['action' => 'edit', $season->id]) ?>
                         </td>
                         <td>
                             <?= $this->Html->link($season->name, ['action' => 'edit', $season->id]) ?>

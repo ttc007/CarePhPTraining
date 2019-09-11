@@ -52,7 +52,7 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
         ?>
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <h5 class="w-100">Distribution of fertilizer to households 
+                    <h5 class="w-100">Phân phối phân bón cho nông hộ
                         <h4><?= $this->GetNameEntity->getName('Farmers',$farmerFertilizer->farmer_id) ?></h4>
                     </h5>
                     <p>
