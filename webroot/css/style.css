@@ -674,3 +674,12 @@ fieldset{
 .pageTitle:first-letter{
     text-transform: uppercase;
 }
+.search-input{
+    width: 300px;
+    padding:10px!important;
+    border-radius: 5px!important;
+}
+.form-search{
+    padding: 0;
+    border: 0;
+}

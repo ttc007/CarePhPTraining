@@ -19,8 +19,13 @@ class GetNameEntityHelper extends Helper{
 
     public function getName($entity, $id){
         $query = TableRegistry::get($entity);
-        // $query = TableRegistry::get($entity, ['className' => "App\Model\Table\\".$entity.'Table']);
         $row = $query->findById($id)->first();
         return $row->get('name');
+    }
+
+    public function getUnit($id){
+        $query = TableRegistry::get('Fertilizers');
+        $row = $query->findById($id)->first();
+        return $row->get('unit');
     }
 }
