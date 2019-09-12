@@ -44,6 +44,8 @@ class AppController extends Controller
                 $pageTitle = "Tính tiền";
             } elseif($action == 'chargeFarmer') {
                 $pageTitle = "Tính tiền nông hộ";
+            } elseif($action == 'searchFarmer') {
+                $pageTitle = "Tìm kiếm nông hộ";
             } else {
                 $pageTitle = "Tính tiền toàn bộ xã/thị trấn";
             }

@@ -42,6 +42,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
+    <?= $this->Html->link('', ['controller' => 'Api\RestGroups','action' => 'index'], ['class'=> 'btn hidden', 'id' => 'urlApiGroup']) ;   ?>
     <nav class="top-bar expanded" data-topbar role="navigation">
         <ul class="title-area large-3 medium-4 columns">
             <li class="name">
@@ -59,6 +60,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
                             <li><?= $this->Html->link('Quản lí đợt', ['controller' => 'Batchs', 'action' => 'index']) ?></li>
                             <li><?= $this->Html->link('Quản lí phân bón', ['controller' => 'Fertilizers', 'action' => 'index']) ?></li>
                             <li><?= $this->Html->link('Quản lí thôn/khu', ['controller' => 'Villages', 'action' => 'index']) ?></li>
+                            <li><?= $this->Html->link('Quản lí tổ', ['controller' => 'Groups', 'action' => 'index']) ?></li>
                             <li><?= $this->Html->link('Đăng xuất', ['controller' => 'Users', 'action' => 'logout']) ?></li>
                         </ul>
                     </div>

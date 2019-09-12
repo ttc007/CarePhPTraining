@@ -63,14 +63,19 @@ class FarmersController extends AppController
     public function index()
     {
         $this->Pagematron->adjust();
+        $conditions = [];
+
+        $group_id = "";
 
         $session = $this->getRequest()->getSession();
         if ($this->request->is('post')) {
             $village_id = $this->request->getData()['village_id'];
             $season_id = $this->request->getData()['season_id'];
+            if(isset($this->request->getData()['group_id'])) $group_id = $this->request->getData()['group_id'];
             
             $session->write('Season.id', $season_id);
             $session->write('Village.id', $village_id);
+            $session->write('Group.id', $group_id);
         } else {
             if($session->read('Season.id')){
                 $season_id = $session->read('Season.id');
@@ -83,21 +88,30 @@ class FarmersController extends AppController
             } else {
                 $village_id = $this->villageQuery->find()->where(['ward_id' => $this->ward_id])->first()->id;
             }
+
+            if($session->read('Group.id')){
+                $group_id = $session->read('Group.id');
+            }
         }
         $batchs = $this->batchQuery->find()->where(['season_id ='=> $season_id])->all();
 
-        $farmers = $this->Farmers->find()->where(['village_id =' => $village_id]);
+        if($group_id!=""){
+            $conditions['group_id = '] = $group_id;
+        }
+        $conditions['village_id = '] = $village_id;
+        $farmers = $this->Farmers->find()->where($conditions)->order(['group_id'=>'ASC']);
         $farmers = $this->paginate($farmers);
         foreach ($farmers as $farmer) {
             $farmer->batchs = [];
             foreach ($batchs as $batch) {
-                $farmer->batchs[$batch->id] = $this->farmerFertilizersQuery->find()->where([
-                                                            'farmer_id =' => $farmer->id,
-                                                            'batch_id =' => $batch->id ])->all();
+                $farmer->batchs[$batch->id] = $this->farmerFertilizersQuery
+                                            ->find()
+                                            ->where(['farmer_id =' => $farmer->id,'batch_id =' => $batch->id ])
+                                            ->all();
             }
         }
         
-        $this->set(compact('farmers', 'batchs', 'village_id', 'season_id'));
+        $this->set(compact('farmers', 'batchs', 'village_id', 'season_id', 'group_id'));
     }
 
     public function add()
@@ -153,6 +167,8 @@ class FarmersController extends AppController
         $batch_id = $this->request->getData()['batch_id'];
         $batch = $this->batchQuery->findById($batch_id)->first();
 
+        $farmer = $this->Farmers->findById($farmer_id)->first();
+
         $this->farmerFertilizersQuery->deleteAll([
             'FarmerFertilizers.farmer_id' => $farmer_id,
             'FarmerFertilizers.batch_id' => $batch_id 
@@ -163,7 +179,7 @@ class FarmersController extends AppController
             $fertilizer = $this->fertilizerQuery->findById($rowData['fertilizer_id'])->first();
             $farmerFertilizer->price = $fertilizer->price;
             $farmerFertilizer->unit = $fertilizer->unit;
-            $farmerFertilizer->village_id = $farmer_id;
+            $farmerFertilizer->village_id = $farmer->village_id;
             $farmerFertilizer->total = $fertilizer->price*$rowData['quantity'];
             $farmerFertilizer->season_id = $batch->season_id;
 
@@ -182,25 +198,31 @@ class FarmersController extends AppController
         $season = $this->seasonQuery->findById($season_id)->first();
         $this->set(compact($season));
 
+        $group_id = "";
+
         $batchs = $this->batchQuery->find()->where(['season_id ='=> $season_id])->all();
         if ($this->request->is('post')) {
             $village_id = $this->request->getData()['village_id'];
             $season_id = $this->request->getData()['season_id'];
+            $group_id = $this->request->getData()['group_id'];
         }
 
-        $farmers = $this->Farmers->find()->where(['village_id ='=> $village_id])->all();
+        if($group_id!=""){
+            $conditions['group_id = '] = $group_id;
+        }
+        $conditions['village_id = '] = $village_id;
+        $farmers = $this->Farmers->find()->where($conditions)->order(['group_id'=>'ASC']);
+        $farmers = $this->paginate($farmers);
         foreach ($farmers as $farmer) {
             $farmer->batchs = [];
             foreach ($batchs as $batch) {
                 $farmer->batchs[$batch->id] = $this->farmerFertilizersQuery->find()
-                                                ->where([
-                                                    'farmer_id =' => $farmer->id,
-                                                    'batch_id =' => $batch->id ])
+                                                ->where(['farmer_id =' => $farmer->id,'batch_id =' => $batch->id ])
                                                 ->all();
             }
         }
         
-        $this->set(compact('farmers', 'batchs', 'season_id', 'village_id'));
+        $this->set(compact('farmers', 'batchs', 'season_id', 'village_id', 'group_id'));
     }
 
     public function chargeWard($season_id){
@@ -209,6 +231,7 @@ class FarmersController extends AppController
             $season_id = $this->request->getData()['season_id'];
         }
         $batchs = $this->batchQuery->find()->where(['season_id ='=> $season_id])->all();
+
         foreach ($villages as $village) {
             $village->totalBatchs = [];
             foreach ($batchs as $batch) {
@@ -221,8 +244,9 @@ class FarmersController extends AppController
                     ]
                 );
                 $query->select(['total' => $query->func()->sum('total')]);
+                Log::debug($query->first());
+
                 $village->totalBatchs[$batch->id] = $query->first();
-                $this->log($village->totalBatchs[$batch->id], 'debug');
             }
         }
         $ward = $this->wardQuery->findById($this->ward_id)->first();

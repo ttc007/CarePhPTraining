@@ -54,34 +54,33 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
     <body class="home">
         <?php echo $this->Form->create( null ,['class'=>'form-filter']); ?>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <?php
                         echo $this->Form->control('season_id', ['type' => 'select','options'=>$this->GetOptions->get('Seasons'), 'label' => 'Mùa vụ'
                             ,'value' => $season_id]);
                     ?>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <?php
                         echo $this->Form->control('village_id', ['type' => 'select','options'=>$this->GetOptions->get('Villages'), 'label'=> 'Khu/thôn'
-                            ,'value' => $village_id]);
+                            ,'value' => $village_id, 'onchange' => 'villageChange(this)']);
                     ?>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
+                    <?php
+                        echo $this->Form->control('group_id', ['type' => 'select','options'=>[], 'label'=> 'Tổ', 'data-value'=>$group_id]);
+                    ?>
+                </div>
+                <div class="col-md-3">
                     <?php
                         echo $this->Form->button(__('Lọc') , ['class'=>'btn-filter']);
                     ?>
                 </div>
+                
             </div>
         <?php echo $this->Form->end(); ?>
         <div class="row">
             <div class="w-100">
-                <div class="pull-left">
-                    <?php
-                        echo $this->Form->create('', ['action' => 'searchFarmer', 'class' => 'form-search']);
-                        echo $this->Form->control('key', ['placeholder' => 'Nhập tên nông hộ muốn tìm kiếm', 'class'=>'search-input', 'label'=>'']);
-                        echo $this->Form->end();
-                    ?>
-                </div>
                 <div class="pull-right">
                     <?= $this->Html->link('', ['action' => 'charge'], ['class'=> 'hidden', 'id' => 'urlCharge']) ;   ?>
                     <a class="charge" onclick="charge()">Tính tiền</a>
@@ -109,7 +108,8 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
                             <?= $this->Html->link($farmer->name, ['action' => 'edit', $farmer->id], ['class'=>'farmer-name']) ?><br>
                             Mã số: <?= $this->Html->link($farmer->id, ['action' => 'edit', $farmer->id]) ?><br>
                             Số điện thoại: <?= $farmer->phone ?><br>
-                            Khu/thôn: <?= $this->GetNameEntity->getVillageName($farmer->village_id) ?>
+                            Địa chỉ: <?= $this->GetNameEntity->getName('Villages', $farmer->village_id) ?>
+                            <?php if($farmer->group_id) echo  ' - '.$this->GetNameEntity->getName('Groups', $farmer->group_id) ?>
                         </td>
                         <?php foreach ($batchs as $batch) : ?>
                             <td>
@@ -136,16 +136,11 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
                 </ul>
                 <div class="paginate-count">
                     <?php
-                        echo " Page ".$this->Paginator->counter();
+                        echo " Trang ".$this->Paginator->counter();
                     ?>
                 </div>
             </div>
         </div>
         
     </body>
-    <script type="text/javascript">
-        function charge() {
-            location.href = $("#urlCharge").attr('href') + "/" + $("#season-id").val() + "/" + $("#village-id").val();
-        }
-    </script>
 </html>

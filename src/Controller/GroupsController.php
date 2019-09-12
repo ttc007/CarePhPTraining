@@ -27,51 +27,55 @@ use Cake\Event\Event;
  *
  * @link https://book.cakephp.org/3.0/en/controllers/pages-controller.html
  */
-class VillagesController extends AppController
+class GroupsController extends AppController
 {
     public function initialize()
     {
         $this->loadComponent('Paginator');
+        $this->loadComponent('Pagematron');
+
         parent::initialize();
     }
     public function beforeFilter(Event $event)
     {
-        $this->titleController = 'Khu/thôn';
+        $this->titleController = 'Tổ';
         parent::beforeFilter($event);
     }
     
     public function index()
     {
-        $villages = $this->Villages->find()->where(['ward_id' => $this->ward_id])->all();
-        $this->set(compact('villages'));
+        $this->Pagematron->adjust();
+        $groups = $this->Groups->find()->where(['ward_id' => $this->ward_id])->order(['village_id'=>'ASC']);
+        $groups = $this->paginate($groups);
+        $this->set(compact('groups'));
     }
 
     public function add()
     {
-        $village = $this->Villages->newEntity();
+        $group = $this->Groups->newEntity();
         if ($this->request->is('post')) {
-            $village = $this->Villages->patchEntity($village, $this->request->getData());
-            $village->ward_id = $this->ward_id;
-            if ($this->Villages->save($village)) {
-                $this->Flash->success(__('Thông tin thôn/khu đã được lưu'));
+            $group = $this->Groups->patchEntity($group, $this->request->getData());
+            $group->ward_id = $this->ward_id;
+            if ($this->Groups->save($group)) {
+                $this->Flash->success(__('Thông tin tổ đã được lưu'));
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Unable to add your blog.'));
         }
-        $this->set(compact('village'));
+        $this->set(compact('group'));
     }
 
     public function edit($id)
     {
-        $village = $this->Villages->findById($id)->firstOrFail();
+        $group = $this->Groups->findById($id)->firstOrFail();
         if ($this->request->is(['post', 'put'])) {
-            $village = $this->Villages->patchEntity($village, $this->request->getData());
-            if ($this->Villages->save($village)) {
-                $this->Flash->success(__('Thông tin thôn/khu đã được cập nhật'));
+            $group = $this->Groups->patchEntity($group, $this->request->getData());
+            if ($this->Groups->save($group)) {
+                $this->Flash->success(__('Thông tin tổ đã được cập nhật'));
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Unable to update your blog.'));
         }
-        $this->set(compact('village'));
+        $this->set(compact('group'));
     }
 }

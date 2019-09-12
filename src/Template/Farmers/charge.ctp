@@ -57,19 +57,24 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
     <body class="home">
         <?php echo $this->Form->create( null ,['class'=>'form-filter']); ?>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <?php
                         echo $this->Form->control('season_id', ['type' => 'select','options'=>$this->GetOptions->get('Seasons'), 'label' => 'Mùa vụ', 
                         'value' => $season_id]);
                     ?>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <?php
                         echo $this->Form->control('village_id', ['type' => 'select','options'=>$this->GetOptions->get('Villages'), 'label'=> 'Khu/thôn',
-                            'value' => $village_id]);
+                            'value' => $village_id, 'onchange'=>'villageChange(this)']);
                     ?>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
+                    <?php
+                        echo $this->Form->control('group_id', ['type' => 'select','options'=>[], 'label'=> 'Tổ', 'data-value'=>$group_id]);
+                    ?>
+                </div>
+                <div class="col-md-3">
                     <?php
                         echo $this->Form->button(__('Tính tiền') , ['class'=>'btn-filter']);
                     ?>
@@ -101,7 +106,8 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
                             <?= $this->Html->link($farmer->name, ['action' => 'edit', $farmer->id], ['class'=>'farmer-name']) ?><br>
                             Mã số: <?= $this->Html->link($farmer->id, ['action' => 'edit', $farmer->id]) ?><br>
                             Số điện thoại: <?= $farmer->phone ?><br>
-                            Khu/thôn: <?= $this->GetNameEntity->getVillageName($farmer->village_id) ?>
+                            Địa chỉ: <?= $this->GetNameEntity->getName('Villages', $farmer->village_id) ?>
+                            <?php if($farmer->group_id) echo  ' - '.$this->GetNameEntity->getName('Groups', $farmer->group_id) ?>
                         </td>
                         <?php foreach ($batchs as $key => $batch) : ?>
                             <td>
@@ -123,13 +129,28 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
                         </td>
                     </tr>
                 <?php endforeach; ?>
-                <tr>
+                <!-- <tr>
                     <td colspan="<?= count($batchs)+2 ?>" class='text-center'>
                         Tổng tiền của khu/thôn <b id="villageName"></b> - <b id="seasonName"></b>
                     </td>
                     <td class="text-right"><b class="text-danger total-farmer-batch"><?= number_format($totalVillage) ?>đ </b></td>
-                </tr>
+                </tr> -->
             </table>
+            
+            <div class="paginate">
+                <ul class="ul-paginate">
+                    <?php
+                        echo $this->Paginator->prev('«', [], [], array('class' => 'disabled')); 
+                        echo $this->Paginator->numbers(); 
+                        echo $this->Paginator->next('»', [], [], array('class' => 'disabled'));
+                    ?>
+                </ul>
+                <div class="paginate-count">
+                    <?php
+                        echo " Trang ".$this->Paginator->counter();
+                    ?>
+                </div>
+            </div>
         </div>
         
     </body>

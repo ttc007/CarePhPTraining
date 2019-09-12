@@ -46,18 +46,12 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
         <link href="https://fonts.googleapis.com/css?family=Raleway:500i|Roboto:300,400,700|Roboto+Mono" rel="stylesheet">
     </head>
     <body class="home">
-        <div class="row">
+        <div class="row">    
             <?php
-                echo $this->Form->create($farmer);
-                // Hard code the user for now.
-                echo $this->Form->control('farmer_id', ['type' => 'hidden', 'value' => $farmer->id]);
+                echo $this->Form->create($group);
                 echo $this->Form->control('name', ['label' => 'Tên']);
-                echo $this->Form->control('phone', ['label' => 'Số điện thoại']);
-                echo $this->Form->control('village_id', ['type' => 'select','options'=>$this->GetOptions->get('Villages'), 'label' => 'Thôn/khu',
-                    'onchange' => 'villageChange(this)']);
-                echo $this->Form->control('group_id', ['type' => 'select','options'=>[], 'label'=> 'Tổ', 'data-value'=>$farmer->group_id]);
+                echo $this->Form->control('village_id', ['label' => 'Khu/thôn', 'options' => $this->GetOptions->get('Villages')]);
                 echo $this->Form->button(__('Lưu'));
-                echo $this->Html->link('Quay về', ['action' => 'index'], ['class'=> 'btn pull-right']) ;
                 echo $this->Form->end();
             ?>
         </div>

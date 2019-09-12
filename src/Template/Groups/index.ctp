@@ -29,6 +29,7 @@ if (!Configure::read('debug')) :
 endif;
 
 $cakeDescription = 'CakePHP: the rapid development PHP framework';
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -47,19 +48,39 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
     </head>
     <body class="home">
         <div class="row">
-            <?php
-                echo $this->Form->create($farmer);
-                // Hard code the user for now.
-                echo $this->Form->control('farmer_id', ['type' => 'hidden', 'value' => $farmer->id]);
-                echo $this->Form->control('name', ['label' => 'Tên']);
-                echo $this->Form->control('phone', ['label' => 'Số điện thoại']);
-                echo $this->Form->control('village_id', ['type' => 'select','options'=>$this->GetOptions->get('Villages'), 'label' => 'Thôn/khu',
-                    'onchange' => 'villageChange(this)']);
-                echo $this->Form->control('group_id', ['type' => 'select','options'=>[], 'label'=> 'Tổ', 'data-value'=>$farmer->group_id]);
-                echo $this->Form->button(__('Lưu'));
-                echo $this->Html->link('Quay về', ['action' => 'index'], ['class'=> 'btn pull-right']) ;
-                echo $this->Form->end();
-            ?>
+            <table>
+                <tr>
+                    <th>STT</th>
+                    <th>Tên</th>
+                </tr>
+                <?php foreach ($groups as $key => $group): ?>
+                    <tr>
+                        <td>
+                            <?= $this->Html->link($key+1, ['action' => 'edit', $group->id]) ?>
+                        </td>
+                        <td>
+                            <?= $this->Html->link($group->get('name'),
+                             ['action' => 'edit', $group->id]) ?> -
+                            <?= $this->GetNameEntity->getName('Villages', $group->village_id)?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
+
+            <div class="paginate">
+                <ul class="ul-paginate">
+                    <?php
+                        echo $this->Paginator->prev('«', [], [], array('class' => 'disabled')); 
+                        echo $this->Paginator->numbers(); 
+                        echo $this->Paginator->next('»', [], [], array('class' => 'disabled'));
+                    ?>
+                </ul>
+                <div class="paginate-count">
+                    <?php
+                        echo " Page ".$this->Paginator->counter();
+                    ?>
+                </div>
+            </div>
         </div>
 
     </body>
