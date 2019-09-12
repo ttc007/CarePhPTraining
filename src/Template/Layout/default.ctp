@@ -43,6 +43,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 </head>
 <body>
     <?= $this->Html->link('', ['controller' => 'Api\RestGroups','action' => 'index'], ['class'=> 'btn hidden', 'id' => 'urlApiGroup']) ;   ?>
+    <input type="hidden" id="ward_id" value="<?= $ward_id ?>">
     <nav class="top-bar expanded" data-topbar role="navigation">
         <ul class="title-area large-3 medium-4 columns">
             <li class="name">
@@ -66,6 +67,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
                     </div>
                 </li>
             </ul>
+            <?= $this->Html->link('Tính tiền', ['controller' => 'Charges','action' => 'index'], ['class'=> 'btn pull-right charge-menu']) ;   ?>
         </div>
     </nav>
 
@@ -84,7 +86,10 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         </div>
         <?= $this->fetch('content') ?>
     </div>
-    <footer>
+    <footer class="mt-4">
+        <div class="row">
+            &nbsp;
+        </div>
     </footer>
 </body>
 </html>

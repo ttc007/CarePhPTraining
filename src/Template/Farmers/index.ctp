@@ -80,12 +80,6 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
             </div>
         <?php echo $this->Form->end(); ?>
         <div class="row">
-            <div class="w-100">
-                <div class="pull-right">
-                    <?= $this->Html->link('', ['action' => 'charge'], ['class'=> 'hidden', 'id' => 'urlCharge']) ;   ?>
-                    <a class="charge" onclick="charge()">Tính tiền</a>
-                </div>
-            </div>
             <table class="table table-bordered table-striped" id='table-farmer'>
                 <tr>
                     <th style="width: 50px">STT</th>
@@ -94,9 +88,9 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
                         <th>
                             <?= $batch->name ?> (<?= $batch->date_provide ?>)
                             <?php if($batch->isLock) {?> 
-                                <?= $this->Html->link("Mở sổ", ['action' => 'lockFarmerFertilizer', $batch->id, 0], ['class' => 'lock-farmer-fertilizer']) ?>
+                                <?= $this->Html->link("Mở sổ", ['controller' => 'Batchs', 'action' => 'lockFarmerFertilizer', $batch->id, 0], ['class' => 'lock-farmer-fertilizer']) ?>
                             <?php } else { ?>
-                                <?= $this->Html->link("Khóa sổ", ['action' => 'lockFarmerFertilizer', $batch->id, 1], ['class' => ' lock-farmer-fertilizer']) ?>
+                                <?= $this->Html->link("Khóa sổ", ['controller' => 'Batchs', 'action' => 'lockFarmerFertilizer', $batch->id, 1], ['class' => ' lock-farmer-fertilizer']) ?>
                             <?php } ?>
                         </th>
                     <?php endforeach ?>
@@ -118,7 +112,9 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
                                     <?= $farmerFertilizer->quantity ?> <?= $farmerFertilizer->unit ?><br>
                                 <?php endforeach ?>
                                 <?php if(!$batch->isLock) {?> 
-                                    <?= $this->Html->link("+", ['action' => 'addFarmerFertilizer', $farmer->id,$batch->id ]) ?>
+                                    <div class="text-left">
+                                        <?= $this->Html->link("+", ['controller'=>'FarmerFertilizers','action' => 'add', $farmer->id,$batch->id ]) ?>
+                                    </div>
                                 <?php } ?>
                             </td>
                         <?php endforeach ?>

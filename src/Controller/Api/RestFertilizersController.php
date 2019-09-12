@@ -41,10 +41,13 @@ class RestFertilizersController extends Controller
 
     public function index()
     {
-        $fertilizers = $this->fertilizerQuery->find()->all();
+        $fertilizers = $this->fertilizerQuery->find()
+                        ->where([
+                            'ward_id' => $this->request->query('ward_id'), 
+                            'id not in'=> $this->request->query('selectfertilizerBefores')
+                        ])->all();
         $this->set(array(
-            'fertilizers' => $fertilizers,
-            '_serialize' => array('fertilizers')
+            'fertilizers' => $fertilizers
         ));
     }
 

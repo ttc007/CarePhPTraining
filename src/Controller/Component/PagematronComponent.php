@@ -32,7 +32,7 @@ class PagematronComponent extends Component
                 $this->controller->paginate['limit'] = 50;
             break;
             default:
-                $this->controller->paginate['limit'] = 5;
+                $this->controller->paginate['limit'] = 10;
             break;
         }
     }

@@ -24,6 +24,9 @@ use App\Http\Session\ComboSession;
 
 use Cake\Log\Log;
 
+use App\Service\FarmerService;
+use App\Service\SeasonService;
+
 /**
  * Static content controller
  *
@@ -40,19 +43,12 @@ class FarmersController extends AppController
     var $villageQuery;
     var $wardQuery;
 
+    var $farmerService;
+
     public function initialize()
     {
-        $this->loadComponent('Paginator');
-        $this->loadComponent('Pagematron');
-
         parent::initialize();
-        $this->farmerFertilizersQuery = TableRegistry::get('FarmerFertilizers', ['className' => 'App\Model\Table\FarmerFertilizersTable']);
-        $this->seasonQuery = TableRegistry::get('Seasons', ['className' => 'App\Model\Table\SeasonsTable']);
-        $this->batchQuery = TableRegistry::get('Batchs', ['className' => 'App\Model\Table\BatchsTable']);
-        $this->fertilizerQuery = TableRegistry::get('Fertilizers', ['className' => 'App\Model\Table\FertilizersTable']);
-        $this->villageQuery = TableRegistry::get('Villages', ['className' => 'App\Model\Table\VillagesTable']);
-        $this->wardQuery = TableRegistry::get('Wards', ['className' => 'App\Model\Table\WardsTable']);
-
+        $this->farmerService = new FarmerService($this->ward_id);
     }
     public function beforeFilter(Event $event)
     {
@@ -63,247 +59,41 @@ class FarmersController extends AppController
     public function index()
     {
         $this->Pagematron->adjust();
-        $conditions = [];
-
-        $group_id = "";
-
-        $session = $this->getRequest()->getSession();
         if ($this->request->is('post')) {
-            $village_id = $this->request->getData()['village_id'];
-            $season_id = $this->request->getData()['season_id'];
-            if(isset($this->request->getData()['group_id'])) $group_id = $this->request->getData()['group_id'];
-            
-            $session->write('Season.id', $season_id);
-            $session->write('Village.id', $village_id);
-            $session->write('Group.id', $group_id);
+            $data = $this->farmerService->getDataPostIndex($this->request);
         } else {
-            if($session->read('Season.id')){
-                $season_id = $session->read('Season.id');
-            } else {
-                $season_id = $this->seasonQuery->find('all', ['order'=>'Seasons.id DESC'])->where(['ward_id'=>$this->ward_id])->first()->id;
-            }
-            
-            if($session->read('Village.id')){
-                $village_id = $session->read('Village.id');
-            } else {
-                $village_id = $this->villageQuery->find()->where(['ward_id' => $this->ward_id])->first()->id;
-            }
-
-            if($session->read('Group.id')){
-                $group_id = $session->read('Group.id');
-            }
+            $data = $this->farmerService->getDataGetIndex($this->request);
         }
-        $batchs = $this->batchQuery->find()->where(['season_id ='=> $season_id])->all();
-
-        if($group_id!=""){
-            $conditions['group_id = '] = $group_id;
-        }
-        $conditions['village_id = '] = $village_id;
-        $farmers = $this->Farmers->find()->where($conditions)->order(['group_id'=>'ASC']);
+        $batchs = $this->farmerService->getBatchs($data['season_id']);
+        $conditions = $this->farmerService->getConditionsFarmer($data);
+        $farmers = $this->farmerService->getFarmers($conditions);
         $farmers = $this->paginate($farmers);
-        foreach ($farmers as $farmer) {
-            $farmer->batchs = [];
-            foreach ($batchs as $batch) {
-                $farmer->batchs[$batch->id] = $this->farmerFertilizersQuery
-                                            ->find()
-                                            ->where(['farmer_id =' => $farmer->id,'batch_id =' => $batch->id ])
-                                            ->all();
-            }
-        }
-        
-        $this->set(compact('farmers', 'batchs', 'village_id', 'season_id', 'group_id'));
+        $this->farmerService->setBatchFarmers($farmers, $batchs);
+
+        $this->set(compact('farmers', 'batchs'));
+        $this->set($data);
     }
 
     public function add()
     {
-        $farmer = $this->Farmers->newEntity();
+        $farmer = $this->farmerService->newEntity();
         if ($this->request->is('post')) {
-            $farmer = $this->Farmers->patchEntity($farmer, $this->request->getData());
-            $farmer->ward_id = $this->ward_id;
-            if ($this->Farmers->save($farmer)) {
-                $this->Flash->success(__('Thông tin nông hộ đã được lưu'));
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('Unable to add your FarmerFertilizers.'));
+            $this->farmerService->saveFarmer($this->request->getData());
+            $this->Flash->success(__('Thông tin nông hộ đã được lưu'));
+            return $this->redirect(['action' => 'index']);
         }
         $this->set(compact('farmer'));
     }
 
     public function edit($id)
     {
-        $farmer = $this->Farmers->findById($id)->firstOrFail();
+        $farmer = $this->farmerService->getFarmerById($id);
         if ($this->request->is(['post', 'put'])) {
+            $this->farmerService->saveFarmer($this->request->getData());
             $farmer = $this->Farmers->patchEntity($farmer, $this->request->getData());
-            $farmer->ward_id = $this->ward_id;
-            if ($this->Farmers->save($farmer)) {
-                $this->Flash->success(__('Thông tin nông hộ đã được cập nhật'));
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('Unable to update your FarmerFertilizers.'));
+            $this->Flash->success(__('Thông tin nông hộ đã được cập nhật'));
+            return $this->redirect(['action' => 'index']);
         }
         $this->set(compact('farmer'));
-    }
-
-    public function addFarmerFertilizer($farmer_id, $batch_id){
-        $data = $this->request->getData();
-        $farmerFertilizer = $this->farmerFertilizersQuery->newEntity();
-        $farmerFertilizer->farmer_id = $farmer_id;
-        $farmerFertilizer->batch_id = $batch_id;
-
-        $batch = $this->batchQuery->findById($batch_id)->first();
-        $farmerFertilizer->season = $this->seasonQuery->findById($batch->season_id)->first();
-
-        $farmer = $this->Farmers->findById($farmer_id)->first();
-
-        $farmerFertilizers = $this->farmerFertilizersQuery->find()->where([
-                                            'farmer_id =' => $farmer->id,
-                                            'batch_id =' => $batch_id ])->all();
-        $this->set(compact('farmerFertilizer', 'farmer', 'farmerFertilizers', 'batch'));
-    }
-
-    public function allocationFertilizer() {
-        $dataSubmit = $this->request->getData()['dataSubmit'];
-        $farmer_id = $this->request->getData()['farmer_id'];
-        $batch_id = $this->request->getData()['batch_id'];
-        $batch = $this->batchQuery->findById($batch_id)->first();
-
-        $farmer = $this->Farmers->findById($farmer_id)->first();
-
-        $this->farmerFertilizersQuery->deleteAll([
-            'FarmerFertilizers.farmer_id' => $farmer_id,
-            'FarmerFertilizers.batch_id' => $batch_id 
-        ]);
-        foreach ($dataSubmit as $key => $rowData) {
-            $farmerFertilizer = $this->farmerFertilizersQuery->newEntity();
-            $farmerFertilizer = $this->farmerFertilizersQuery->patchEntity($farmerFertilizer, $rowData);
-            $fertilizer = $this->fertilizerQuery->findById($rowData['fertilizer_id'])->first();
-            $farmerFertilizer->price = $fertilizer->price;
-            $farmerFertilizer->unit = $fertilizer->unit;
-            $farmerFertilizer->village_id = $farmer->village_id;
-            $farmerFertilizer->total = $fertilizer->price*$rowData['quantity'];
-            $farmerFertilizer->season_id = $batch->season_id;
-
-            $this->farmerFertilizersQuery->save($farmerFertilizer);
-        }
-    }
-
-    public function lockFarmerFertilizer($id, $isLock){
-        $batch = $this->batchQuery->findById($id)->first();
-        $batch->isLock = $isLock;
-        $this->batchQuery->save($batch);
-        return $this->redirect(['action' => 'index']);
-    }
-
-    public function charge($season_id, $village_id){
-        $season = $this->seasonQuery->findById($season_id)->first();
-        $this->set(compact($season));
-
-        $group_id = "";
-
-        $batchs = $this->batchQuery->find()->where(['season_id ='=> $season_id])->all();
-        if ($this->request->is('post')) {
-            $village_id = $this->request->getData()['village_id'];
-            $season_id = $this->request->getData()['season_id'];
-            $group_id = $this->request->getData()['group_id'];
-        }
-
-        if($group_id!=""){
-            $conditions['group_id = '] = $group_id;
-        }
-        $conditions['village_id = '] = $village_id;
-        $farmers = $this->Farmers->find()->where($conditions)->order(['group_id'=>'ASC']);
-        $farmers = $this->paginate($farmers);
-        foreach ($farmers as $farmer) {
-            $farmer->batchs = [];
-            foreach ($batchs as $batch) {
-                $farmer->batchs[$batch->id] = $this->farmerFertilizersQuery->find()
-                                                ->where(['farmer_id =' => $farmer->id,'batch_id =' => $batch->id ])
-                                                ->all();
-            }
-        }
-        
-        $this->set(compact('farmers', 'batchs', 'season_id', 'village_id', 'group_id'));
-    }
-
-    public function chargeWard($season_id){
-        $villages = $this->villageQuery->find()->where(['ward_id' => $this->ward_id])->all();
-        if ($this->request->is('post')) {
-            $season_id = $this->request->getData()['season_id'];
-        }
-        $batchs = $this->batchQuery->find()->where(['season_id ='=> $season_id])->all();
-
-        foreach ($villages as $village) {
-            $village->totalBatchs = [];
-            foreach ($batchs as $batch) {
-                $query = $this->farmerFertilizersQuery->find('all',
-                    [
-                        'conditions' => [
-                            'FarmerFertilizers.batch_id' => $batch->id,
-                            'FarmerFertilizers.village_id' => $village->id
-                        ]
-                    ]
-                );
-                $query->select(['total' => $query->func()->sum('total')]);
-                Log::debug($query->first());
-
-                $village->totalBatchs[$batch->id] = $query->first();
-            }
-        }
-        $ward = $this->wardQuery->findById($this->ward_id)->first();
-        $this->set(compact('season_id', 'villages', 'batchs', 'ward'));
-    }
-
-    public function chargeFarmer($farmer_id, $season_id){
-        $farmer = $this->Farmers->findById($farmer_id)->first();
-        $farmer->batchs = [];
-        $batchs = $this->batchQuery->find()->where(['season_id ='=> $season_id])->all();
-        foreach ($batchs as $batch) {
-            $farmer->batchs[$batch->id] = $this->farmerFertilizersQuery->find()
-                                    ->where([
-                                        'farmer_id' => $farmer_id, 
-                                        'batch_id' => $batch->id
-                                    ])->all();
-            $this->log($farmer->batchs, 'debug');
-        }
-        $season = $this->seasonQuery->findById($season_id)->first();
-        $this->set(compact('farmer', 'batchs', 'season'));
-    }
-
-    public function searchFarmer()
-    {
-        $this->Pagematron->adjust();
-
-        $session = $this->getRequest()->getSession();
-        if ($this->request->is('post')) {
-            $searchKey = $this->request->getData()['key'];
-            
-            $session->write('Search.key', $searchKey);
-        } 
-        if($session->read('Season.id')){
-            $season_id = $session->read('Season.id');
-        } else {
-            $season_id = $this->seasonQuery->find('all', ['order'=>'Seasons.id DESC'])->where(['ward_id'=>$this->ward_id])->first()->id;
-        }
-        
-        if($session->read('Village.id')){
-            $village_id = $session->read('Village.id');
-        } else {
-            $village_id = $this->villageQuery->find()->where(['ward_id' => $this->ward_id])->first()->id;
-        }
-
-        $batchs = $this->batchQuery->find()->where(['season_id ='=> $season_id])->all();
-
-        $farmers = $this->Farmers->find()->where(['village_id =' => $village_id, 'name like' => '%'.$searchKey.'%' ]);
-        Log::debug($farmers);
-        $farmers = $this->paginate($farmers);
-        foreach ($farmers as $farmer) {
-            $farmer->batchs = [];
-            foreach ($batchs as $batch) {
-                $farmer->batchs[$batch->id] = $this->farmerFertilizersQuery->find()->where([
-                                                            'farmer_id =' => $farmer->id,
-                                                            'batch_id =' => $batch->id ])->all();
-            }
-        }
-        $this->set(compact('farmers', 'batchs', 'village_id','season_id'));
     }
 }

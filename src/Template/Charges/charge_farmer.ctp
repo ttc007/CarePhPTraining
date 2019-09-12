@@ -60,7 +60,8 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
                 <h4>Chi tiết tính tiền</h4>
                 <h3><?= $farmer->name ?></h3>
                 <p>
-                    Khu/thôn:<?= $this->GetNameEntity->getName('Villages',$farmer->village_id)?> 
+                    Đại chỉ: <?= $this->GetNameEntity->getName('Villages',$farmer->village_id)?> - 
+                    <?php if(isset($farmer->group_id)) echo $this->GetNameEntity->getName('Groups',$farmer->group_id)?>
                     - Số điện thoại: <?= $farmer->phone?> 
                     - Mã số: <?= $farmer->id?> 
                 </p>

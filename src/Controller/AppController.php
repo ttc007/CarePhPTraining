@@ -12,6 +12,8 @@ class AppController extends Controller
 
     public function initialize()
     {
+        $this->loadComponent('Paginator');
+        $this->loadComponent('Pagematron');
         $this->loadComponent('Flash');
         $this->loadComponent('Auth', [
             'loginRedirect' => [
@@ -25,6 +27,7 @@ class AppController extends Controller
         ]);
 
         $this->ward_id = $this->request->getSession()->read('User.Ward.id');
+        $this->set('ward_id', $this->ward_id);
     }
 
     public function beforeFilter(Event $event)
@@ -35,9 +38,9 @@ class AppController extends Controller
         $hierarchys[] = ['title' => $this->titleController, 'controller' => $controller];
         if($action!='index') {
             if($action == 'add'){
-                $pageTitle = "Thêm mới ". $this->titleController;;
+                $pageTitle = "Thêm mới ". $this->titleController;
             } elseif($action=='edit'){
-                $pageTitle = "Chỉnh sửa ". $this->titleController;;
+                $pageTitle = "Chỉnh sửa ". $this->titleController;
             } elseif($action == 'addFarmerFertilizer') {
                 $pageTitle = "Cấp phát";
             } elseif($action == 'charge') {
@@ -50,6 +53,8 @@ class AppController extends Controller
                 $pageTitle = "Tính tiền toàn bộ xã/thị trấn";
             }
             $hierarchys[] = ['title' => $pageTitle];
+
+            // if($action == 'chargeFarmer') $pageTitle = "&nbsp;";
         } else {
             $pageTitle = 'Danh sách '. $this->titleController;
         }

@@ -47,7 +47,7 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
     </head>
     <body class="home">
         <?php
-            echo $this->Form->create($farmerFertilizer, ['action' => 'index','class' => "w-100 hidden", 'id'=>'formGetToken']);
+            echo $this->Form->create($farmerFertilizer, ['controller' => 'Farmers','action' => 'index','class' => "w-100 hidden", 'id'=>'formGetToken']);
             echo $this->Form->end();
         ?>
         <div class="row">
@@ -68,8 +68,14 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
                 <input type="hidden" name="farmer_id" id='farmer_id' value="<?=$farmer->id?>" />
                 <input type="hidden" name="batch_id" id='batch_id' value="<?=$farmerFertilizer->batch_id?>" />
                 <input type="hidden" name="farmer_id" id='farmer_id' value="<?=$farmerFertilizer->season->id?>" />
-                <?= $this->Html->link('', ['action' => 'allocationFertilizer'], ['class'=> 'btn hidden', 'id' => 'urlAllocationFertilizer']) ;   ?>
-                <?= $this->Html->link('', ['controller' => 'Api\RestFertilizers','action' => 'index'], ['class'=> 'btn hidden', 'id' => 'urlApiFertilizer']) ;   ?>
+                <?= $this->Html->link('', ['controller' => 'FarmerFertilizers',
+                    'action' => 'allocationFertilizer'], ['class'=> 'btn hidden', 'id' => 'urlAllocationFertilizer']) ;   ?>
+
+                <?= $this->Html->link('', ['controller' => 'Farmers',
+                    'action' => 'index'], ['class'=> 'btn hidden', 'id' => 'urlFarmersIndex']) ;   ?>
+
+                <?= $this->Html->link('', ['controller' => 'Api\RestFertilizers','action' => 'index'],
+                    ['class'=> 'btn hidden', 'id' => 'urlApiFertilizer']) ;   ?>
             </div>
         </div>
         <div class="w-100 mt-3 row">
@@ -119,81 +125,5 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
         </div>
         
     </body>
-    <script type="text/javascript">
-        function addFarmerFertilizer(){
-            $.ajax({
-                url: $("#urlApiFertilizer").attr('href'),
-                type: "GET",
-                dataType:'json',
-                success:function(data){
-                    if(data.fertilizers.length > $(".rowFertilizer").length){
-                        var rowFertilizer = $(`
-                            <div class="row rowFertilizer"> 
-                                <div class="col-md-6">
-                                    <?= $this->Form->control('fertilizer_id', ['type' => 'select','options'=>$this->GetOptions->get('Fertilizers'),'label'=>'','class' => 'select-fertilizer', 'onclick' =>  'selectFertilizerChange(this)']);?>
-                                </div>
-                                <div class="col-md-3">
-                                    <?= $this->Form->control('quantity',['label'=>'', 'value' => 0, 'class' => 'text-right w-75 pull-left', 'min'=>'0']);?>
-                                    <span class='unit-fertilizer'>Kg</span>
-                                </div>
-                                <div class="col-md-2">
-                                    <a onclick="removeFarmerFertilizer(this)"><i class="fa fa-remove"></i></a>
-                                </div>
-                            </div>
-                        `);
-                        $.each($(".select-fertilizer") , function(i, selectfertilizerBefore){
-                            $(rowFertilizer).find(".select-fertilizer option[value="+$(selectfertilizerBefore).val()+"]").remove();
-                        });
-                        $("#divFertilizer").append(rowFertilizer);
-                        selectFertilizerChange(rowFertilizer.find(".select-fertilizer"));
-                    } else {
-                        alert("Số lượng chủng loại phân đã đạt giới hạn!!!");
-                    }
-                }
-            });
-            
-        }
-        function removeFarmerFertilizer(obj){
-            $(obj).closest("div.rowFertilizer").remove();
-        }
-        function allocationFertilizer(){
-            var dataSubmit = [];
-            $.each($(".rowFertilizer"), function(i, row){
-                dataSubmit.push({
-                    farmer_id: $("#farmer_id").val(),
-                    season_id:$("#season_id").val(),
-                    batch_id:$("#batch_id").val(),
-                    fertilizer_id: $(row).find("[name=fertilizer_id]").val(),
-                    quantity: $(row).find("[name=quantity]").val(),
-                });
-            });
-            $.ajax({
-                url: $("#urlAllocationFertilizer").attr('href'),
-                type:"POST",
-                async: false,
-                data: {
-                    dataSubmit:dataSubmit,
-                    _csrfToken: $("[name=_csrfToken]").val(),
-                    farmer_id: $("#farmer_id").val(),
-                    batch_id:$("#batch_id").val(),
-                },
-                success:function(data){
-                    location.href = $("#formGetToken").attr("action");
-                }
-            });
-        }
-
-        function selectFertilizerChange(obj){
-            $.ajax({
-                url: $("#urlApiFertilizer").attr('href')+"/get/"+$(obj).val(),
-                type: "GET",
-                dataType:'json',
-                success:function(data){
-                    var rowFertilizer = $(obj).closest(".rowFertilizer");
-                    var unit = $(rowFertilizer).find(".unit-fertilizer");
-                    unit.html(data.fertilizer.unit);
-                }
-            });
-        }
-    </script>
+    
 </html>

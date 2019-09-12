@@ -20,6 +20,8 @@ use Cake\Http\Exception\NotFoundException;
 use Cake\View\Exception\MissingTemplateException;
 use Cake\Event\Event;
 
+use App\Service\BatchService;
+
 /**
  * Static content controller
  *
@@ -34,6 +36,8 @@ class BatchsController extends AppController
     {
         $this->loadComponent('Paginator');
         parent::initialize();
+
+        $this->batchService = new BatchService($this->ward_id);
     }
     public function beforeFilter(Event $event)
     {
@@ -74,5 +78,10 @@ class BatchsController extends AppController
             $this->Flash->error(__('Unable to update your blog.'));
         }
         $this->set(compact('batch'));
+    }
+
+    public function lockFarmerFertilizer($id, $isLock){
+        $this->batchService->lockFarmerFertilizer($id, $isLock);
+        return $this->redirect(['controller' => 'Farmers', 'action' => 'index']);
     }
 }
