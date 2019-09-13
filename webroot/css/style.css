@@ -633,10 +633,12 @@ fieldset{
     padding: 16px 32px;
 }
 .btn-filter{
-    margin-bottom:0!important;
+    margin-bottom: 0!important;
     margin-top: 20px;
-    padding: 10px 20px;
+    padding: 5px 30px;
     background: #1a8186;
+    display: inline-block;
+    color: #fff!important;
 }
 .form-filter{
     /*border:none;*/
@@ -656,7 +658,7 @@ fieldset{
 .lock-farmer-fertilizer{
     display: inline-block;
     float: right;
-    color: #aaa;
+    color: #aaa!important;
     font-size: 12px;
     font-weight: 100;
 }
@@ -675,9 +677,10 @@ fieldset{
     text-transform: uppercase;
 }
 .search-input{
-    width: 300px;
+    min-width: 300px;
     padding:10px!important;
-    border-radius: 5px!important;
+    margin-bottom: 15px;
+    /*border-radius: 5px!important;*/
 }
 .form-search{
     padding: 0;
@@ -685,10 +688,11 @@ fieldset{
 }
 .paginate li.active a{
     background: #ccc;
-    color: #fff;
+    color: #fff!important;
+    cursor: text;
 }
 .paginate li.disabled a{
-    display: none;
+    /*display: none;*/
 }
 .charge-menu{
     display: block;
@@ -697,4 +701,11 @@ fieldset{
     border: 1px solid #a0d3e8;
     padding: 3px 10px;
     margin-top: 7px;
+}
+.link{
+    color: #0071BC!important;
+    cursor: pointer;
+}
+.paginate-count{
+    float: left;
 }

@@ -78,7 +78,7 @@ class FarmersController extends AppController
     {
         $farmer = $this->farmerService->newEntity();
         if ($this->request->is('post')) {
-            $this->farmerService->saveFarmer($this->request->getData());
+            $this->farmerService->saveFarmer($this->request->getData(), $farmer);
             $this->Flash->success(__('Thông tin nông hộ đã được lưu'));
             return $this->redirect(['action' => 'index']);
         }
@@ -89,8 +89,7 @@ class FarmersController extends AppController
     {
         $farmer = $this->farmerService->getFarmerById($id);
         if ($this->request->is(['post', 'put'])) {
-            $this->farmerService->saveFarmer($this->request->getData());
-            $farmer = $this->Farmers->patchEntity($farmer, $this->request->getData());
+            $this->farmerService->saveFarmer($this->request->getData(), $farmer);
             $this->Flash->success(__('Thông tin nông hộ đã được cập nhật'));
             return $this->redirect(['action' => 'index']);
         }

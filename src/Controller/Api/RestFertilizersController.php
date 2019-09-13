@@ -51,17 +51,6 @@ class RestFertilizersController extends Controller
         ));
     }
 
-    public function add()
-    {
-        $fertilizer = $this->fertilizerQuery->newEntity();
-        if ($this->request->is('post')) {
-            $fertilizer = $this->fertilizerQuery->patchEntity($fertilizer, $this->request->getData());
-            $this->fertilizerQuery->save($fertilizer);
-            $this->Flash->error(__('Unable to add your blog.'));
-        }
-        $this->set('fertilizer', $fertilizer);
-    }
-
     public function get($id)
     {
         $fertilizer = $this->fertilizerQuery->findById($id)->firstOrFail();

@@ -106,8 +106,7 @@ class FarmerService
 		return $this->farmerRepository->newEntity();
 	}
 
-	function saveFarmer($data){
-		$farmer = $this->newEntity();
+	function saveFarmer($data, $farmer){
 		$farmer = $this->farmerRepository->patchEntity($farmer, $data);
         $farmer->ward_id = $this->ward_id;
         $this->farmerRepository->save($farmer);

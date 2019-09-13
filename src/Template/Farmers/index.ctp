@@ -39,19 +39,18 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
         <title>
             <?= $cakeDescription ?>
         </title>
-
-        <?= $this->Html->meta('icon') ?>
-        <?= $this->Html->css('base.css') ?>
-        <?= $this->Html->css('style.css') ?>
-        <?= $this->Html->css('home.css') ?>
-        <link href="https://fonts.googleapis.com/css?family=Raleway:500i|Roboto:300,400,700|Roboto+Mono" rel="stylesheet">
         <style type="text/css">
             .container{
                 max-width: 1300px;
             }
         </style>
+        <?= $this->Html->script('farmer.js') ?>
     </head>
     <body class="home">
+        <?= $this->Html->link('', ['controller' => 'Api\RestFarmers','action' => 'index'], ['class'=> 'btn hidden', 'id' => 'urlApiFarmers']) ;   ?>
+        <?= $this->Html->link('', ['controller' => 'Farmers','action' => 'index'], ['class'=> 'btn hidden', 'id' => 'urlFarmers']) ;   ?>
+        <?= $this->Html->link('', ['controller' => 'FarmersFertilizers','action' => 'index'], ['class'=> 'btn hidden', 'id' => 'urlFarmersFertilizers']) ;   ?>
+        <?= $this->Html->link('', ['controller' => 'Batchs','action' => 'index'], ['class'=> 'btn hidden', 'id' => 'urlBatchs']) ;   ?>
         <?php echo $this->Form->create( null ,['class'=>'form-filter']); ?>
             <div class="row">
                 <div class="col-md-3">
@@ -72,63 +71,22 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
                     ?>
                 </div>
                 <div class="col-md-3">
-                    <?php
-                        echo $this->Form->button(__('Lọc') , ['class'=>'btn-filter']);
-                    ?>
+                    <a class="btn-filter" onclick="filterFarmer()">Lọc</a>
                 </div>
                 
             </div>
         <?php echo $this->Form->end(); ?>
         <div class="row">
+            <div class="w-100">
+                <div id='search-form-div' class="pull-right w-25"></div>
+            </div>
             <table class="table table-bordered table-striped" id='table-farmer'>
-                <tr>
-                    <th style="width: 50px">STT</th>
-                    <th>Nông hộ</th>
-                    <?php foreach ($batchs as $batch) : ?>
-                        <th>
-                            <?= $batch->name ?> (<?= $batch->date_provide ?>)
-                            <?php if($batch->isLock) {?> 
-                                <?= $this->Html->link("Mở sổ", ['controller' => 'Batchs', 'action' => 'lockFarmerFertilizer', $batch->id, 0], ['class' => 'lock-farmer-fertilizer']) ?>
-                            <?php } else { ?>
-                                <?= $this->Html->link("Khóa sổ", ['controller' => 'Batchs', 'action' => 'lockFarmerFertilizer', $batch->id, 1], ['class' => ' lock-farmer-fertilizer']) ?>
-                            <?php } ?>
-                        </th>
-                    <?php endforeach ?>
-                </tr>
-                <?php foreach ($farmers as $key => $farmer): ?>
-                    <tr>
-                        <td><?= $key+1 ?></td>
-                        <td>
-                            <?= $this->Html->link($farmer->name, ['action' => 'edit', $farmer->id], ['class'=>'farmer-name']) ?><br>
-                            Mã số: <?= $this->Html->link($farmer->id, ['action' => 'edit', $farmer->id]) ?><br>
-                            Số điện thoại: <?= $farmer->phone ?><br>
-                            Địa chỉ: <?= $this->GetNameEntity->getName('Villages', $farmer->village_id) ?>
-                            <?php if($farmer->group_id) echo  ' - '.$this->GetNameEntity->getName('Groups', $farmer->group_id) ?>
-                        </td>
-                        <?php foreach ($batchs as $batch) : ?>
-                            <td>
-                                <?php foreach ($farmer->batchs[$batch->id] as $farmerFertilizer) : ?>
-                                    <?= $this->GetNameEntity->getName('Fertilizers',  $farmerFertilizer->fertilizer_id) ?>: 
-                                    <?= $farmerFertilizer->quantity ?> <?= $farmerFertilizer->unit ?><br>
-                                <?php endforeach ?>
-                                <?php if(!$batch->isLock) {?> 
-                                    <div class="text-left">
-                                        <?= $this->Html->link("+", ['controller'=>'FarmerFertilizers','action' => 'add', $farmer->id,$batch->id ]) ?>
-                                    </div>
-                                <?php } ?>
-                            </td>
-                        <?php endforeach ?>
-                    </tr>
-                <?php endforeach; ?>
+                <tr id="thead-farmer"></tr>
+                <tbody id='tbody-farmer'></tbody>
             </table>
 
             <div class="paginate">
                 <ul class="ul-paginate">
-                    <?php
-                        echo $this->Paginator->prev('«', [], [], array('class' => 'disabled')); 
-                        echo $this->Paginator->numbers(); 
-                        echo $this->Paginator->next('»', [], [], array('class' => 'disabled'));
-                    ?>
                 </ul>
                 <div class="paginate-count">
                     <?php

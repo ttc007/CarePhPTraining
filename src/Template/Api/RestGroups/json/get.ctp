@@ -1,2 +1,2 @@
 <?php
-echo json_encode(compact('fertilizer'));
+echo json_encode(compact('group'));
