@@ -136,7 +136,7 @@ function editFarmer($id){
     location.href = $("#urlFarmers").attr("href") + "/add"; 
 }
 
-function addFarmerFertilizer($farmerId, $batchId){
+function allocationFarmer($farmerId, $batchId){
     location.href = $("#urlFarmerFertilizers").attr("href") + "/add" + "/" + $farmerId + "/" + $batchId; 
 }
 
@@ -164,12 +164,24 @@ function str_to_slug(str)
     // Xóa khoảng trắng thay bằng ký tự -
     // str = str.replace(/(\s+)/g, '-');
  
-    // xóa phần dự - ở đầu
+    // xóa phần dư - ở đầu
     str = str.replace(/^-+/g, '');
  
     // xóa phần dư - ở cuối
     str = str.replace(/-+$/g, '');
  
-    // return
     return str;
 }
+
+function number_format(number){
+    number = number.toString();
+    if(number=='125000') console.log(number);
+    var length = number.length;
+    var result = "";
+    for (var i = 0; i < length; i++) {
+        result += number.charAt(length-1-i);
+        if(i%3==2 && i!=length-1) result+=",";
+    }
+    return result.split("").reverse().join("");
+}
+

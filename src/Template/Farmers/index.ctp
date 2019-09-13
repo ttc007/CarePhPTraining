@@ -45,11 +45,11 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
             }
         </style>
         <?= $this->Html->script('farmer.js') ?>
+        <?= $this->Html->script('paginate.js') ?>
     </head>
     <body class="home">
-        <?= $this->Html->link('', ['controller' => 'Api\RestFarmers','action' => 'index'], ['class'=> 'btn hidden', 'id' => 'urlApiFarmers']) ;   ?>
         <?= $this->Html->link('', ['controller' => 'Farmers','action' => 'index'], ['class'=> 'btn hidden', 'id' => 'urlFarmers']) ;   ?>
-        <?= $this->Html->link('', ['controller' => 'FarmersFertilizers','action' => 'index'], ['class'=> 'btn hidden', 'id' => 'urlFarmersFertilizers']) ;   ?>
+        <?= $this->Html->link('', ['controller' => 'FarmerFertilizers','action' => 'index'], ['class'=> 'btn hidden', 'id' => 'urlFarmerFertilizers']) ;   ?>
         <?= $this->Html->link('', ['controller' => 'Batchs','action' => 'index'], ['class'=> 'btn hidden', 'id' => 'urlBatchs']) ;   ?>
         <?php echo $this->Form->create( null ,['class'=>'form-filter']); ?>
             <div class="row">
@@ -86,13 +86,8 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
             </table>
 
             <div class="paginate">
-                <ul class="ul-paginate">
-                </ul>
-                <div class="paginate-count">
-                    <?php
-                        echo " Trang ".$this->Paginator->counter();
-                    ?>
-                </div>
+                <ul class="ul-paginate"></ul>
+                <div class="paginate-count"></div>
             </div>
         </div>
         

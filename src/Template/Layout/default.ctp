@@ -35,7 +35,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->Html->css('base.css') ?>
     <?= $this->Html->css('style.css') ?>
     <?= $this->Html->script('app.js') ?>
-    
+
     <?= $this->Html->css('home.css') ?>
     <link href="https://fonts.googleapis.com/css?family=Raleway:500i|Roboto:300,400,700|Roboto+Mono" rel="stylesheet">
 
@@ -46,6 +46,8 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 </head>
 <body>
     <?= $this->Html->link('', ['controller' => 'Api\RestGroups','action' => 'index'], ['class'=> 'btn hidden', 'id' => 'urlApiGroup']) ;   ?>
+    <?= $this->Html->link('', ['controller' => 'Api\RestFarmers','action' => 'index'], ['class'=> 'btn hidden', 'id' => 'urlApiFarmers']) ;   ?>
+    
     <input type="hidden" id="ward_id" value="<?= $ward_id ?>">
     <nav class="top-bar expanded" data-topbar role="navigation">
         <ul class="title-area large-3 medium-4 columns">

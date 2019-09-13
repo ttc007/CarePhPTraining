@@ -119,7 +119,7 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
             <div class="col-md-12">
                 <button onclick="allocationFertilizer()">Cấp phát</button>
                 <?php
-                    echo $this->Html->link('Quay về', ['action' => 'index'], ['class'=> 'btn pull-right1']) ;   
+                    echo $this->Html->link('Quay về', ['controller' => 'Farmers','action' => 'index'], ['class'=> 'btn pull-right1']) ;   
                 ?>
             </div>
         </div>

@@ -678,7 +678,7 @@ fieldset{
 }
 .search-input{
     min-width: 300px;
-    padding:10px!important;
+    padding:10px 10px!important;
     margin-bottom: 15px;
     /*border-radius: 5px!important;*/
 }

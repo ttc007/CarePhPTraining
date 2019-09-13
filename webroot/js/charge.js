@@ -24,18 +24,29 @@ function filterFarmer(page){
 		data: dataSearch,
 		dataType:'json',
 		success:function(data){
-			renderTrHead(data.response.batchs);
+			renderTrHeadCharge(data.response.batchs);
 			if(page == undefined) page = 1;
 			var limit = 7;
 			var paginator = {
 				'limit' : limit,
 				'count' : data.response.farmers.length,
 				'page' : page,
-				'screen' : 'farmer'
+				'screen' : 'charge'
 			};
 			renderPaginate(data.response.farmers, paginator);
 
 			renderSearch(data.response.farmers, paginator);
 		}
 	});
+}
+
+function chargeWard() {
+    location.href = $("#urlChargeWard").attr('href') + "/" + $("#season-id").val();
+}
+$(document).ready(function(){
+    $("#villageName").html("<?= $this->GetNameEntity->getName('Villages', $village_id) ?>");
+    $("#seasonName").html("<?= $this->GetNameEntity->getName('Seasons', $season_id) ?>");
+});
+function chargeFarmer(farmer_id){
+    location.href = $("#urlChargeFarmer").attr('href') + "/" + farmer_id + "/" + $("#season-id").val();
 }

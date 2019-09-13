@@ -39,12 +39,7 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
         <title>
             <?= $cakeDescription ?>
         </title>
-
-        <?= $this->Html->meta('icon') ?>
-        <?= $this->Html->css('base.css') ?>
-        <?= $this->Html->css('style.css') ?>
-        <?= $this->Html->css('home.css') ?>
-        <link href="https://fonts.googleapis.com/css?family=Raleway:500i|Roboto:300,400,700|Roboto+Mono" rel="stylesheet">
+        
         <style type="text/css">
             .container{
                 max-width: 1500px;
@@ -53,8 +48,11 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
                 max-width: 1500px;
             }
         </style>
+        <?= $this->Html->script('charge.js') ?>
+        <?= $this->Html->script('paginate.js') ?>
     </head>
     <body class="home">
+        <?= $this->Html->link("", ['action' => 'chargeFarmer'], ['class'=> 'hidden', 'id' => 'urlChargeFarmer']) ?>
         <?php echo $this->Form->create( null ,['class'=>'form-filter']); ?>
             <div class="row">
                 <div class="col-md-3">
@@ -75,9 +73,7 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
                     ?>
                 </div>
                 <div class="col-md-3">
-                    <?php
-                        echo $this->Form->button(__('Tính tiền') , ['class'=>'btn-filter']);
-                    ?>
+                    <a class="btn-filter" onclick="filterFarmer()">Lọc</a>
                 </div>
             </div>
         <?php echo $this->Form->end(); ?>
@@ -86,84 +82,22 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
                 <?= $this->Html->link("", ['action' => 'chargeWard'], ['class'=> 'hidden', 'id' => 'urlChargeWard']) ?>
                 <a class="charge" onclick="chargeWard()">Tính tiền toàn bộ xã/thị trấn</a>
             </div>
-            <table class="table table-bordered table-striped" id='charge-table'>
-                <tr>
-                    <th style="width: 50px">STT</th>
-                    <th>Nông hộ</th>
-                    <?php foreach ($batchs as $batch) : ?>
-                        <th>
-                            <?= $batch->name ?> (<?= $batch->date_provide ?>)
-                        </th>
-                    <?php endforeach ?>
-                    <th style="width: 100px" class="text-right">Tổng cộng</th>
-                </tr>
-                <?php $totalVillage = 0; ?>
-                <?php foreach ($farmers as $key => $farmer): ?>
-                    <?php $totalSeason = 0; ?>
-                    <tr>
-                        <td><?= $key+1 ?></td>
-                        <td>
-                            <?= $this->Html->link($farmer->name, ['action' => 'edit', $farmer->id], ['class'=>'farmer-name']) ?><br>
-                            Mã số: <?= $this->Html->link($farmer->id, ['action' => 'edit', $farmer->id]) ?><br>
-                            Số điện thoại: <?= $farmer->phone ?><br>
-                            Địa chỉ: <?= $this->GetNameEntity->getName('Villages', $farmer->village_id) ?>
-                            <?php if($farmer->group_id) echo  ' - '.$this->GetNameEntity->getName('Groups', $farmer->group_id) ?>
-                        </td>
-                        <?php foreach ($batchs as $key => $batch) : ?>
-                            <td>
-                                <?php $totalBatch = 0; ?>
-                                <?php foreach ($farmer->batchs[$batch->id] as $farmerFertilizer) : ?>
-                                    <?= $this->GetNameEntity->getName('Fertilizers',  $farmerFertilizer->fertilizer_id) ?>: 
-                                    <?= $farmerFertilizer->quantity ?> <?= $farmerFertilizer->unit ?><br>
-                                    <?php  $totalBatch += $farmerFertilizer->quantity*$farmerFertilizer->price  ?>
-                                <?php endforeach ?>
-                                Tổng cộng: <span class="text-danger"><?= number_format($totalBatch) ?>đ </span>
-                                <?php $totalSeason += $totalBatch; ?>
-                            </td>
-                        <?php endforeach ?>
-                        <td class="text-right" >
-                            <?= $this->Html->link("", ['action' => 'chargeFarmer'], 
-                                ['class'=> 'hidden', 'id' => 'urlChargeFarmer']) ?>
-                            <a onclick="chargeFarmer(<?= $farmer->id ?>)"><b class="text-danger total-farmer-batch"><?= number_format($totalSeason) ?>đ </b></a>
-                            <?php $totalVillage += $totalSeason; ?>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-                <!-- <tr>
-                    <td colspan="<?= count($batchs)+2 ?>" class='text-center'>
-                        Tổng tiền của khu/thôn <b id="villageName"></b> - <b id="seasonName"></b>
-                    </td>
-                    <td class="text-right"><b class="text-danger total-farmer-batch"><?= number_format($totalVillage) ?>đ </b></td>
-                </tr> -->
+            <div class="w-100">
+                <div id='search-form-div' class="pull-right w-25"></div>
+            </div>
+            <table class="table table-bordered table-striped" id='table-farmer'>
+                <tr id="thead-farmer"></tr>
+                <tbody id='tbody-farmer'></tbody>
             </table>
-            
+
             <div class="paginate">
-                <ul class="ul-paginate">
-                    <?php
-                        echo $this->Paginator->prev('«', [], [], array('class' => 'disabled')); 
-                        echo $this->Paginator->numbers(); 
-                        echo $this->Paginator->next('»', [], [], array('class' => 'disabled'));
-                    ?>
-                </ul>
-                <div class="paginate-count">
-                    <?php
-                        echo " Trang ".$this->Paginator->counter();
-                    ?>
-                </div>
+                <ul class="ul-paginate"></ul>
+                <div class="paginate-count"></div>
             </div>
         </div>
         
     </body>
     <script type="text/javascript">
-        function chargeWard() {
-            location.href = $("#urlChargeWard").attr('href') + "/" + $("#season-id").val();
-        }
-        $(document).ready(function(){
-            $("#villageName").html("<?= $this->GetNameEntity->getName('Villages', $village_id) ?>");
-            $("#seasonName").html("<?= $this->GetNameEntity->getName('Seasons', $season_id) ?>");
-        });
-        function chargeFarmer(farmer_id){
-            location.href = $("#urlChargeFarmer").attr('href') + "/" + farmer_id + "/" + $("#season-id").val();
-        }
+        
     </script>
 </html>

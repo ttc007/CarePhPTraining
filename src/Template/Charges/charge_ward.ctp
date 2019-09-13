@@ -68,7 +68,7 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
                             <?= $batch->name ?> (<?= $batch->date_provide ?>)
                         </th>
                     <?php endforeach ?>
-                    <th style="width: 100px" class="text-right">Tổng cộng</th>
+                    <th style="width: 120px" class="text-right">Tổng cộng</th>
                 </tr>
                 <?php $totalVillage = 0; ?>
                 <?php foreach ($villages as $key => $village): ?>
