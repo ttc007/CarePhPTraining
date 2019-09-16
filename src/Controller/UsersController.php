@@ -19,7 +19,7 @@ class UsersController extends AppController
         parent::initialize();
         $this->loadComponent('Flash');
         $this->loadComponent('Pagematron');
-        $this->loadComponent('Auth');
+        // $this->loadComponent('Auth');
 
         $this->wardQuery = TableRegistry::get('Wards', ['className' => 'App\Model\Table\WardsTable']);
     }

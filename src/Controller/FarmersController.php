@@ -58,20 +58,7 @@ class FarmersController extends AppController
     
     public function index()
     {
-        $this->Pagematron->adjust();
-        if ($this->request->is('post')) {
-            $data = $this->farmerService->getDataPostIndex($this->request);
-        } else {
-            $data = $this->farmerService->getDataGetIndex($this->request);
-        }
-        $batchs = $this->farmerService->getBatchs($data['season_id']);
-        $conditions = $this->farmerService->getConditionsFarmer($data);
-        $farmers = $this->farmerService->getFarmers($conditions);
-        $farmers = $this->paginate($farmers);
-        $this->farmerService->setBatchFarmers($farmers, $batchs);
-
-        $this->set(compact('farmers', 'batchs'));
-        $this->set($data);
+        
     }
 
     public function add()

@@ -44,21 +44,7 @@ class ChargesController extends AppController
     }
     
     public function index(){
-        $this->Pagematron->adjust();
-
         
-        $data = $this->chargeService->getDataForIndex($this->request);
-        $batchs = $this->chargeService->getBatchList(['season_id =' => $data['season_id']]);
-        $season = $this->chargeService->getSeason($data['season_id']);
-        $this->set(compact($season));
-
-        $conditions = $this->chargeService->getConditionsFarmer($data);
-        $farmers = $this->chargeService->getFarmerList($conditions, ['group_id'=>'ASC']);
-        $farmers = $this->paginate($farmers);
-        $this->chargeService->setBatchFarmers($farmers, $batchs);
-
-        $this->set(compact('farmers', 'batchs'));
-        $this->set($data);
     }
 
     public function chargeWard($season_id){

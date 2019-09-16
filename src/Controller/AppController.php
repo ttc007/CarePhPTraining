@@ -12,19 +12,7 @@ class AppController extends Controller
 
     public function initialize()
     {
-        $this->loadComponent('Paginator');
-        $this->loadComponent('Pagematron');
         $this->loadComponent('Flash');
-        $this->loadComponent('Auth', [
-            'loginRedirect' => [
-                'controller' => 'Farmers',
-                'action' => 'index'
-            ],
-            'logoutRedirect' => [
-                'controller' => 'Users',
-                'action' => 'login'
-            ]
-        ]);
 
         $this->ward_id = $this->request->getSession()->read('User.Ward.id');
         $this->set('ward_id', $this->ward_id);

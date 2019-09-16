@@ -32,27 +32,30 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
+    <link href="https://fonts.googleapis.com/css?family=Raleway:500i|Roboto:300,400,700|Roboto+Mono" rel="stylesheet">
+
     <?= $this->Html->css('base.css') ?>
     <?= $this->Html->css('style.css') ?>
-    <?= $this->Html->script('app.js') ?>
+    <?= $this->Html->script('common/ajax.js') ?>
+    <?= $this->Html->script('common/app.js') ?>
+    <?= $this->Html->script('common/md5.js') ?>
+    <?= $this->Html->script('common/auth.js') ?>
+
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
+    <?= $this->Html->link('', ['controller' => 'Api\RestUsers','action' => 'index'], ['class'=> 'hidden', 'id'=>'urlApiUser']); ?>
+    <?= $this->Html->link('', ['controller' => 'Farmers','action' => 'index'], ['class'=> 'hidden', 'id'=>'urlFarmers']); ?>
+
     <nav class="top-bar expanded" data-topbar role="navigation">
         <ul class="title-area large-3 medium-4 columns">
             <li class="name">
                 <h1><a href=""><?= $this->fetch('title') ?></a></h1>
             </li>
         </ul>
-        <div class="top-bar-section">
-            <ul class="right">
-                
-            </ul>
-        </div>
     </nav>
     <?= $this->Flash->render() ?>
     <div class="container clearfix">

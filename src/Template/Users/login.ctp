@@ -28,47 +28,41 @@ if (!Configure::read('debug')) :
     );
 endif;
 
-$cakeDescription = 'CakePHP: the rapid development PHP framework';
-
 ?>
 <!DOCTYPE html>
 <html>
-<head>
-    <?= $this->Html->charset() ?>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        <?= $cakeDescription ?>
-    </title>
+    <head>
+        <?= $this->Html->charset() ?>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>
+            <?= $cakeDescription ?>
+        </title>
 
-    <?= $this->Html->meta('icon') ?>
-    <?= $this->Html->css('base.css') ?>
-    <?= $this->Html->css('style.css') ?>
-    <?= $this->Html->css('home.css') ?>
-    <link href="https://fonts.googleapis.com/css?family=Raleway:500i|Roboto:300,400,700|Roboto+Mono" rel="stylesheet">
-</head>
-<body class="home">
+        <link href="https://fonts.googleapis.com/css?family=Raleway:500i|Roboto:300,400,700|Roboto+Mono" rel="stylesheet">
+    </head>
+    <body class="home">
+        <div class="row">
+            <div class="users form">
+                <?= $this->Flash->render() ?>
+                <form  id='container-form' onsubmit='login'>
+                    <fieldset>
+                        <legend><?= __('Login') ?></legend>
+                        <?= $this->Form->control('username', ['label' => 'Tên đăng nhập']) ?>
+                        <?= $this->Form->control('password', ['label' => 'Mật khẩu']) ?>
+                        <a onclick='login()' class="btn btn-filter">Đăng nhập</a>
+                        <?= $this->Html->link('Đăng kí', ['action' => 'add'], ['class'=> 'button-register']); ?>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
 
-<header class="row">
-    <!-- <div class="header-image"><?= $this->Html->image('cake.logo.svg') ?></div> -->
-    <!-- <div class="header-title">
-        <h1>Welcome to CakePHP <?= Configure::version() ?> Red Velvet. Build fast. Grow solid.</h1>
-    </div> -->
-</header>
+        <script type="text/javascript">
+            if(localStorage.registerMsg == 1){
+                addSuccess('Chúc mừng bạn đã đăng kí thành công.<br>', 'container-form');
+                localStorage.registerMsg = 0;
+            }
 
-<div class="row">
-    <div class="users form">
-    <?= $this->Flash->render() ?>
-    <?= $this->Form->create() ?>
-        <fieldset>
-            <legend><?= __('Login') ?></legend>
-            <?= $this->Form->control('username') ?>
-            <?= $this->Form->control('password') ?>
-            <?= $this->Form->button(__('Login')); ?>
-            <?= $this->Html->link('Register', ['action' => 'add'], ['class'=> 'button-register']); ?>
-        </fieldset>
-    <?= $this->Form->end() ?>
-    </div>
-</div>
-
-</body>
+            checkLogin();
+        </script>
+    </body>
 </html>

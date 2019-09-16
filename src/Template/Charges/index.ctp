@@ -49,7 +49,6 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
             }
         </style>
         <?= $this->Html->script('charge.js') ?>
-        <?= $this->Html->script('paginate.js') ?>
     </head>
     <body class="home">
         <?= $this->Html->link("", ['action' => 'chargeFarmer'], ['class'=> 'hidden', 'id' => 'urlChargeFarmer']) ?>
@@ -57,19 +56,19 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
             <div class="row">
                 <div class="col-md-3">
                     <?php
-                        echo $this->Form->control('season_id', ['type' => 'select','options'=>$this->GetOptions->get('Seasons'), 'label' => 'Mùa vụ', 
-                        'value' => $season_id]);
+                        echo $this->Form->control('season_id', ['type' => 'select','options'=>$this->GetOptions->get('Seasons'), 'label' => 'Mùa vụ'
+                        ]);
                     ?>
                 </div>
                 <div class="col-md-3">
                     <?php
                         echo $this->Form->control('village_id', ['type' => 'select','options'=>$this->GetOptions->get('Villages'), 'label'=> 'Khu/thôn',
-                            'value' => $village_id, 'onchange'=>'villageChange(this)']);
+                            'onchange'=>'villageChange(this)']);
                     ?>
                 </div>
                 <div class="col-md-3">
                     <?php
-                        echo $this->Form->control('group_id', ['type' => 'select','options'=>[], 'label'=> 'Tổ', 'data-value'=>$group_id]);
+                        echo $this->Form->control('group_id', ['type' => 'select','options'=>[], 'label'=> 'Tổ']);
                     ?>
                 </div>
                 <div class="col-md-3">

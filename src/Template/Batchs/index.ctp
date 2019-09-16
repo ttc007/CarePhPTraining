@@ -64,7 +64,7 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
                             <?= $this->Html->link($batch->name, ['action' => 'edit', $batch->id]) ?>
                         </td>
                         <td>
-                            <?= $this->GetNameEntity->getSeasonName($batch->season_id) ?>
+                            <?= $this->GetNameEntity->getName('Seasons', $batch->season_id) ?>
                         </td>
                         <td>
                             <?= $batch->date_provide?$batch->date_provide:"-" ?>

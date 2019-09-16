@@ -14,29 +14,24 @@ function filterFarmer(page){
 		'ward_id': $("#ward_id").val(),
 		'village_id': $("#village-id").val(),
 		'group_id': $("#group-id").val(),
-		'season_id': $("#season-id").val()
+		'season_id': $("#season-id").val(),
+		'authenticate': sessionStorage.authenticate
 	};
 	localStorage.dataSearch = JSON.stringify(dataSearch);
 
-	$.ajax({
-		url:$("#urlApiFarmers").attr('href'),
-		type:"POST",
-		data: dataSearch,
-		dataType:'json',
-		success:function(data){
-			renderTrHeadCharge(data.response.batchs);
-			if(page == undefined) page = 1;
-			var limit = 7;
-			var paginator = {
-				'limit' : limit,
-				'count' : data.response.farmers.length,
-				'page' : page,
-				'screen' : 'charge'
-			};
-			renderPaginate(data.response.farmers, paginator);
+	ajaxCallApi($("#urlApiFarmers").attr('href'), 'POST', dataSearch, function(data){
+		renderTrHeadCharge(data.response.batchs);
+		if(page == undefined) page = 1;
+		var limit = 7;
+		var paginator = {
+			'limit' : limit,
+			'count' : data.response.farmers.length,
+			'page' : page,
+			'screen' : 'charge'
+		};
+		renderPaginate(data.response.farmers, paginator);
 
-			renderSearch(data.response.farmers, paginator);
-		}
+		renderSearch(data.response.farmers, paginator);
 	});
 }
 

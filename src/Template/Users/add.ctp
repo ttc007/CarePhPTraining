@@ -28,51 +28,33 @@ if (!Configure::read('debug')) :
     );
 endif;
 
-$cakeDescription = 'CakePHP: the rapid development PHP framework';
-
 ?>
 <!DOCTYPE html>
 <html>
-<head>
-    <?= $this->Html->charset() ?>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        <?= $cakeDescription ?>
-    </title>
+    <head>
+        <?= $this->Html->charset() ?>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>
+            <?= $cakeDescription ?>
+        </title>
 
-    <?= $this->Html->meta('icon') ?>
-    <?= $this->Html->css('base.css') ?>
-    <?= $this->Html->css('style.css') ?>
-    <?= $this->Html->css('home.css') ?>
-    <link href="https://fonts.googleapis.com/css?family=Raleway:500i|Roboto:300,400,700|Roboto+Mono" rel="stylesheet">
-</head>
-<body class="home">
+    </head>
+    <body class="home">
+        <div class="row">
+            <div class="users form">
+                <form  id='container-form' onsubmit='register'>
+                    <fieldset>
+                        <legend><?= __('Register') ?></legend>
+                        <?= $this->Form->control('username', ['label' => 'Tên đăng nhập']) ?>
+                        <?= $this->Form->control('password', ['label' => 'Mật khẩu']) ?>
+                        <?= $this->Form->control('confirmPassword', ['type'=>'password', 'label' => 'Xác nhận mật khẩu']) ?>
+                        <?= $this->Form->control('ward', ['label' => 'Xã/thị trấn']) ?>
+                        <a onclick='register()' class="btn btn-filter">Đăng kí</a>
+                        <?= $this->Html->link('Đăng nhập', ['action' => 'login'], ['class'=> 'button-register']); ?>
+                   </fieldset>
+                </form>
+            </div>
+        </div>
 
-<header class="row">
-    <!-- <div class="header-image"><?= $this->Html->image('cake.logo.svg') ?></div> -->
-    <!-- <div class="header-title">
-        <h1>Welcome to CakePHP <?= Configure::version() ?> Red Velvet. Build fast. Grow solid.</h1>
-    </div> -->
-</header>
-
-<div class="row">
-    <div class="users form">
-    <?= $this->Form->create($user) ?>
-        <fieldset>
-            <legend><?= __('Register') ?></legend>
-            <?= $this->Form->control('username') ?>
-            <?= $this->Form->control('password') ?>
-            <?= $this->Form->control('confirmPassword', ['type'=>'password']) ?>
-            <!-- <?= $this->Form->control('role', [
-                'options' => ['admin' => 'Admin', 'author' => 'Author']
-            ]) ?> -->
-            <?= $this->Form->control('ward') ?>
-            <?= $this->Form->button(__('Submit')); ?>
-       </fieldset>
-    
-    <?= $this->Form->end() ?>
-    </div>
-</div>
-
-</body>
+    </body>
 </html>
